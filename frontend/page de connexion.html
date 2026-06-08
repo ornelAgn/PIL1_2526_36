@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Menthor Link · Connexion</title>
+    <!-- Google Fonts + Font Awesome 6 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #3b82f6;
+            --accent: #60a5fa;
+            --dark: #1e1b4b;
+            --darker: #0f172a;
+            --light: #f8fafc;
+            --white: #ffffff;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --success: #22c55e;
+            --warning: #f59e0b; /* conservée mais non utilisée */
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f1f5f9 0%, #eef2ff 100%);
+            background-attachment: fixed;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            color: var(--dark);
+            position: relative;
+        }
+
+        /* Cercles flottants */
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+            animation: floatBubble 22s ease-in-out infinite;
+        }
+        body::before {
+            width: 380px;
+            height: 380px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            top: -70px;
+            right: -50px;
+        }
+        body::after {
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            bottom: -60px;
+            left: -40px;
+            animation-delay: -12s;
+            animation-duration: 26s;
+        }
+
+        @keyframes floatBubble {
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(18px, -22px) scale(1.05);
+            }
+            50% {
+                transform: translate(-12px, -38px) scale(0.95);
+            }
+            75% {
+                transform: translate(-22px, -8px) scale(1.02);
+            }
+        }
+
+        /* Conteneur principal */
+        .nucleus-container {
+            max-width: 1150px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 2.5rem;
+            box-shadow: 0 35px 70px -20px rgba(0, 0, 0, 0.2), 0 15px 25px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.7) inset;
+            overflow: hidden;
+            transition: box-shadow var(--transition);
+            position: relative;
+            z-index: 1;
+        }
+
+        .nucleus-container:hover {
+            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.25), 0 18px 30px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+        }
+
+        .login-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        /* ========== COLONNE GAUCHE : MENTHOR LINK ========== */
+        .brand-column {
+            background: linear-gradient(145deg, var(--darker) 0%, var(--dark) 50%, #1e1b4b 100%);
+            padding: 3.5rem 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            min-height: 100%;
+        }
+
+        .brand-column::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -15%;
+            width: 420px;
+            height: 420px;
+            background: radial-gradient(circle at 40% 40%, rgba(99, 102, 241, 0.25) 0%, rgba(99, 102, 241, 0) 60%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .brand-column::after {
+            content: '';
+            position: absolute;
+            bottom: -12%;
+            left: -8%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle at 60% 50%, rgba(96, 165, 250, 0.15) 0%, transparent 65%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* Grille hexagonale subtile */
+        .hex-grid {
+            position: absolute;
+            top: 20%;
+            right: 8%;
+            width: 120px;
+            height: 120px;
+            opacity: 0.12;
+            pointer-events: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            transform: rotate(15deg);
+        }
+        .hex-grid .hex {
+            width: 28px;
+            height: 16px;
+            background: var(--primary-light);
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+            opacity: 0.8;
+        }
+
+        /* Lignes connectées */
+        .circuit-lines {
+            position: absolute;
+            bottom: 15%;
+            left: 10%;
+            width: 150px;
+            height: 100px;
+            opacity: 0.12;
+            pointer-events: none;
+        }
+        .circuit-lines svg {
+            width: 100%;
+            height: 100%;
+        }
+        .circuit-lines line,
+        .circuit-lines circle {
+            stroke: var(--primary-light);
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .logo-area {
+            margin-bottom: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-light), var(--accent));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .logo i {
+            background: linear-gradient(135deg, var(--primary-light), var(--accent));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            font-size: 2.2rem;
+        }
+
+        .brand-subtitle {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-top: 0.6rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Témoignage */
+        .testimonial-block {
+            margin-top: auto;
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 1.5rem;
+            padding: 1.8rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .testimonial-quote {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+            font-weight: 400;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-quote .fa-quote-left {
+            color: var(--accent);
+            font-size: 1.4rem;
+            opacity: 0.8;
+            margin-right: 6px;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #cbd5e1;
+            font-weight: 500;
+            border-left: 3px solid var(--primary);
+            padding-left: 1.2rem;
+        }
+
+        .author-avatar {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .author-info {
+            line-height: 1.4;
+        }
+        .author-name {
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 0.95rem;
+        }
+        .author-role {
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        /* Badge (sans orange) */
+        .ranking-badge {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(96, 165, 250, 0.15);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 2rem;
+            padding: 0.4rem 1rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            backdrop-filter: blur(8px);
+            z-index: 2;
+        }
+        .ranking-badge i {
+            color: var(--accent);
+        }
+
+        .brand-footer {
+            position: relative;
+            z-index: 1;
+            font-size: 0.7rem;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .brand-footer i {
+            color: var(--success);
+        }
+
+        /* ========== COLONNE DROITE : FORMULAIRE ========== */
+        .form-column {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3.5rem 3.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .welcome-title {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.4rem;
+            letter-spacing: -0.3px;
+        }
+
+        .design-sub {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 2.2rem;
+            line-height: 1.5;
+        }
+
+        .input-group {
+            margin-bottom: 1.4rem;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.8rem;
+            margin-bottom: 0.45rem;
+            color: var(--dark);
+            letter-spacing: 0.01em;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper .input-icon {
+            position: absolute;
+            left: 1rem;
+            color: #94a3b8;
+            font-size: 0.95rem;
+            pointer-events: none;
+            transition: color var(--transition);
+            z-index: 2;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 0.9rem 1rem 0.9rem 2.8rem;
+            border-radius: 1rem;
+            border: 1.5px solid var(--gray-light);
+            font-size: 0.95rem;
+            transition: all var(--transition);
+            background: var(--light);
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+            letter-spacing: 0.01em;
+        }
+
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+            background: var(--white);
+        }
+
+        .input-wrapper input:focus~.input-icon {
+            color: var(--primary);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 0.9rem;
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.4rem;
+            transition: color var(--transition);
+            z-index: 2;
+            display: flex;
+            align-items: center;
+        }
+        .toggle-password:hover {
+            color: var(--primary);
+        }
+
+        /* Force du mot de passe – sans orange */
+        .password-strength {
+            display: flex;
+            gap: 4px;
+            margin-top: 0.5rem;
+            height: 4px;
+            border-radius: 2px;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .password-strength.active {
+            opacity: 1;
+        }
+        .password-strength .segment {
+            flex: 1;
+            background: var(--gray-light);
+            border-radius: 2px;
+            transition: background var(--transition);
+        }
+        .password-strength .segment.weak {
+            background: #ef4444;
+        }
+        .password-strength .segment.medium {
+            background: var(--secondary);
+        }
+        .password-strength .segment.strong {
+            background: var(--success);
+        }
+
+        .strength-text {
+            font-size: 0.7rem;
+            color: var(--gray);
+            margin-top: 0.25rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .strength-text.active {
+            opacity: 1;
+        }
+        .strength-text.weak {
+            color: #ef4444;
+        }
+        .strength-text.medium {
+            color: var(--secondary);
+        }
+        .strength-text.strong {
+            color: var(--success);
+        }
+
+        .error-message {
+            font-size: 0.75rem;
+            color: #ef4444;
+            margin-top: 0.3rem;
+            display: none;
+            align-items: center;
+            gap: 0.3rem;
+            animation: fadeIn 0.2s ease;
+        }
+        .error-message.visible {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-4px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0.8rem 0 1.6rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.82rem;
+            color: var(--gray);
+            cursor: pointer;
+            transition: color var(--transition);
+        }
+        .checkbox-label:hover {
+            color: var(--dark);
+        }
+
+        .checkbox-label input {
+            width: 1.1rem;
+            height: 1.1rem;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .forgot-link {
+            font-size: 0.82rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all var(--transition);
+        }
+        .forgot-link:hover {
+            color: var(--primary-dark);
+        }
+
+        .btn-login {
+            background: var(--primary);
+            width: 100%;
+            padding: 0.95rem;
+            border-radius: 1rem;
+            border: none;
+            font-weight: 700;
+            font-size: 1rem;
+            color: white;
+            cursor: pointer;
+            transition: all var(--transition);
+            margin-bottom: 1.2rem;
+            box-shadow: 0 6px 18px rgba(99, 102, 241, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+        }
+        .btn-login:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
+        }
+        .btn-login.loading {
+            pointer-events: none;
+            opacity: 0.85;
+        }
+        .btn-login .spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid rgba(255, 255, 255, 0.4);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        .btn-login.loading .spinner {
+            display: inline-block;
+        }
+        .btn-login.loading .btn-text {
+            display: none;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: var(--gray);
+            font-size: 0.78rem;
+            margin: 1.2rem 0;
+        }
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        .divider span {
+            margin: 0 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0 0.5rem;
+        }
+
+        .btn-google {
+            width: 100%;
+            background: var(--white);
+            border: 1.5px solid var(--gray-light);
+            padding: 0.85rem;
+            border-radius: 1rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--dark);
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        .btn-google i {
+            font-size: 1.2rem;
+            color: #DB4437;
+        }
+        .btn-google:hover {
+            background: #fafafa;
+            border-color: #cbd5e1;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .signup-prompt {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+        .signup-prompt a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .signup-prompt a:hover {
+            color: var(--primary-dark);
+        }
+
+        .demo-badge {
+            text-align: center;
+            margin-top: 1.2rem;
+            font-size: 0.7rem;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            opacity: 0.7;
+        }
+
+        .toast {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--white);
+            border-radius: 1rem;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            z-index: 1000;
+            transform: translateX(120%);
+            transition: transform 0.35s;
+            border: 1px solid var(--gray-light);
+        }
+        .toast.show {
+            transform: translateX(0);
+        }
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+        .toast.error {
+            border-left: 4px solid #ef4444;
+        }
+        .toast.info {
+            border-left: 4px solid var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 980px) {
+            .login-grid {
+                grid-template-columns: 1fr;
+            }
+            .brand-column {
+                order: 2;
+                text-align: center;
+                padding: 2.5rem 2rem;
+                min-height: auto;
+            }
+            .form-column {
+                order: 1;
+                padding: 2.5rem 2rem;
+            }
+            .logo-area {
+                text-align: center;
+            }
+            .testimonial-quote {
+                font-size: 1rem;
+            }
+            .ranking-badge {
+                top: 1.5rem;
+                right: 1.5rem;
+            }
+            .hex-grid,
+            .circuit-lines {
+                display: none;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .form-column,
+            .brand-column {
+                padding: 2rem 1.5rem;
+            }
+            .welcome-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage"></span>
+    </div>
+
+    <div class="nucleus-container">
+        <div class="login-grid">
+            <!-- Colonne gauche : Menthor Link -->
+            <div class="brand-column">
+                <div class="ranking-badge">
+                    <i class="fas fa-star"></i> Excellence académique
+                </div>
+
+                <div class="hex-grid">
+                    <div class="hex"></div><div class="hex"></div><div class="hex"></div>
+                    <div class="hex"></div><div class="hex"></div><div class="hex"></div>
+                    <div class="hex"></div><div class="hex"></div><div class="hex"></div>
+                </div>
+
+                <div class="circuit-lines">
+                    <svg viewBox="0 0 150 100">
+                        <line x1="10" y1="20" x2="60" y2="20" />
+                        <line x1="60" y1="20" x2="60" y2="50" />
+                        <circle cx="60" cy="50" r="3" fill="white" />
+                        <line x1="60" y1="50" x2="100" y2="50" />
+                        <line x1="100" y1="50" x2="100" y2="80" />
+                        <circle cx="100" cy="80" r="3" fill="white" />
+                        <line x1="100" y1="80" x2="140" y2="80" />
+                    </svg>
+                </div>
+
+                <div class="logo-area">
+                    <div class="logo">
+                        <i class="fas fa-graduation-cap"></i> Menthor Link
+                    </div>
+                    <p class="brand-subtitle">Plateforme de mentorat et de réussite académique</p>
+                </div>
+
+                <div class="testimonial-block">
+                    <div class="testimonial-quote">
+                        <i class="fas fa-quote-left"></i> Grâce à Menthor Link, j'ai pu bénéficier d'un accompagnement personnalisé qui a boosté mes résultats et ma confiance.
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MD</div>
+                        <div class="author-info">
+                            <span class="author-name">Mamadou Diallo</span><br>
+                            <span class="author-role">Étudiant en informatique · Promo 2025</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="brand-footer">
+                    <i class="fas fa-shield-check"></i> Connexion sécurisée · Conforme RGPD
+                </div>
+            </div>
+
+            <!-- Colonne droite : formulaire -->
+            <div class="form-column">
+                <div>
+                    <h1 class="welcome-title">Bienvenue sur votre espace</h1>
+                    <p class="design-sub">Connectez-vous pour retrouver vos mentors,<br>vos ressources et votre progression.</p>
+
+                    <form id="loginForm" action="#" method="post" novalidate>
+                        <div class="input-group">
+                            <label for="loginEmail">Adresse email</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-envelope input-icon"></i>
+                                <input type="email" id="loginEmail" name="email" placeholder="prenom.nom@menthorlink.com" value="alex.jordan@gmail.com" autocomplete="email">
+                            </div>
+                            <div class="error-message" id="emailError">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span></span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="loginPassword">Mot de passe</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-lock input-icon"></i>
+                                <input type="password" id="loginPassword" name="password" placeholder="••••••••" autocomplete="current-password">
+                                <button type="button" class="toggle-password" id="togglePassword" aria-label="Afficher le mot de passe">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="password-strength" id="passwordStrength">
+                                <span class="segment"></span>
+                                <span class="segment"></span>
+                                <span class="segment"></span>
+                                <span class="segment"></span>
+                            </div>
+                            <div class="strength-text" id="strengthText"></div>
+                            <div class="error-message" id="passwordError">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span></span>
+                            </div>
+                        </div>
+
+                        <div class="flex-between">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="rememberCheckbox"> Se souvenir de moi
+                            </label>
+                            <a href="#" id="forgotPasswordLink" class="forgot-link">Mot de passe oublié ?</a>
+                        </div>
+
+                        <button type="submit" class="btn-login" id="loginButton">
+                            <span class="btn-text">Se connecter</span>
+                            <span class="spinner"></span>
+                        </button>
+                    </form>
+
+                    <div class="divider">
+                        <span>ou continuer avec</span>
+                    </div>
+
+                    <button class="btn-google" id="googleBtn">
+                        <i class="fab fa-google"></i> Google
+                    </button>
+
+                    <div class="signup-prompt">
+                        Pas encore de compte ? <a href="#" id="signupLink">Créer un compte</a>
+                    </div>
+                 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const form = document.getElementById('loginForm');
+            const emailInput = document.getElementById('loginEmail');
+            const passwordInput = document.getElementById('loginPassword');
+            const togglePasswordBtn = document.getElementById('togglePassword');
+            const rememberCheck = document.getElementById('rememberCheckbox');
+            const forgotLink = document.getElementById('forgotPasswordLink');
+            const googleBtn = document.getElementById('googleBtn');
+            const signupLink = document.getElementById('signupLink');
+            const loginButton = document.getElementById('loginButton');
+            const passwordStrength = document.getElementById('passwordStrength');
+            const strengthText = document.getElementById('strengthText');
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+
+            let toastTimer;
+
+            function showToast(message, type = 'info') {
+                clearTimeout(toastTimer);
+                toast.className = 'toast ' + type;
+                toastMessage.textContent = message;
+                const icon = toast.querySelector('i');
+                if (type === 'success') icon.className = 'fas fa-check-circle';
+                else if (type === 'error') icon.className = 'fas fa-exclamation-circle';
+                else icon.className = 'fas fa-info-circle';
+                toast.classList.add('show');
+                toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
+            }
+
+            function hideErrors() {
+                emailError.classList.remove('visible');
+                passwordError.classList.remove('visible');
+            }
+
+            function showFieldError(element, msg) {
+                element.querySelector('span').textContent = msg;
+                element.classList.add('visible');
+            }
+
+            function validateEmail(email) {
+                if (!email) return 'Veuillez saisir votre adresse email.';
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Format d\'email invalide.';
+                return null;
+            }
+
+            function validatePassword(password) {
+                if (!password) return 'Veuillez saisir votre mot de passe.';
+                if (password.length < 4) return '4 caractères minimum.';
+                return null;
+            }
+
+            function evaluateStrength(password) {
+                let score = 0;
+                if (password.length >= 4) score++;
+                if (password.length >= 8) score++;
+                if (/[A-Z]/.test(password) && /[a-z]/.test(password)) score++;
+                if (/\d/.test(password) || /[^A-Za-z0-9]/.test(password)) score++;
+
+                const segments = passwordStrength.querySelectorAll('.segment');
+                segments.forEach(seg => seg.className = 'segment');
+                passwordStrength.classList.add('active');
+                strengthText.classList.add('active');
+
+                if (score <= 1) {
+                    segments[0].classList.add('weak');
+                    strengthText.textContent = 'Faible';
+                    strengthText.className = 'strength-text active weak';
+                } else if (score === 2) {
+                    segments[0].classList.add('weak');
+                    segments[1].classList.add('medium');
+                    strengthText.textContent = 'Moyen';
+                    strengthText.className = 'strength-text active medium';
+                } else if (score === 3) {
+                    segments[0].classList.add('medium');
+                    segments[1].classList.add('medium');
+                    segments[2].classList.add('strong');
+                    strengthText.textContent = 'Bon';
+                    strengthText.className = 'strength-text active strong';
+                } else {
+                    segments.forEach(seg => seg.classList.add('strong'));
+                    strengthText.textContent = 'Très fort';
+                    strengthText.className = 'strength-text active strong';
+                }
+                if (!password) {
+                    passwordStrength.classList.remove('active');
+                    strengthText.classList.remove('active');
+                }
+            }
+
+            togglePasswordBtn.addEventListener('click', () => {
+                const isPassword = passwordInput.type === 'password';
+                passwordInput.type = isPassword ? 'text' : 'password';
+                togglePasswordBtn.querySelector('i').className = isPassword ? 'fas fa-eye-slash' : 'fas fa-eye';
+            });
+
+            passwordInput.addEventListener('input', () => {
+                evaluateStrength(passwordInput.value);
+                if (passwordError.classList.contains('visible')) passwordError.classList.remove('visible');
+            });
+
+            emailInput.addEventListener('input', () => {
+                if (emailError.classList.contains('visible')) emailError.classList.remove('visible');
+            });
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                hideErrors();
+                const email = emailInput.value.trim();
+                const password = passwordInput.value.trim();
+                const emailErr = validateEmail(email);
+                const passwordErr = validatePassword(password);
+
+                if (emailErr) showFieldError(emailError, emailErr);
+                if (passwordErr) showFieldError(passwordError, passwordErr);
+                if (emailErr || passwordErr) return;
+
+                loginButton.classList.add('loading');
+                setTimeout(() => {
+                    loginButton.classList.remove('loading');
+                    showToast('✅ Connexion réussie ! Bienvenue sur Menthor Link.', 'success');
+                    if (rememberCheck.checked) {
+                        localStorage.setItem('menthor_remember', 'true');
+                        localStorage.setItem('menthor_email', email);
+                    } else {
+                        localStorage.removeItem('menthor_remember');
+                        localStorage.removeItem('menthor_email');
+                    }
+                    passwordInput.value = '';
+                    passwordStrength.classList.remove('active');
+                    strengthText.classList.remove('active');
+                    passwordInput.type = 'password';
+                    togglePasswordBtn.querySelector('i').className = 'fas fa-eye';
+                }, 1200);
+            });
+
+            forgotLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                const emailVal = emailInput.value.trim();
+                if (!emailVal || !emailVal.includes('@')) {
+                    showFieldError(emailError, 'Entrez un email valide pour réinitialiser.');
+                    return;
+                }
+                showToast('📧 Lien de réinitialisation envoyé à ' + emailVal + ' (demo).', 'info');
+            });
+
+            googleBtn.addEventListener('click', () => showToast('🔐 Connexion Google simulée.', 'info'));
+            signupLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showToast('✨ Création de compte Menthor Link (demo).', 'info');
+            });
+
+            if (localStorage.getItem('menthor_remember') === 'true') {
+                rememberCheck.checked = true;
+                const savedEmail = localStorage.getItem('menthor_email');
+                if (savedEmail) emailInput.value = savedEmail;
+            }
+        })();
+    </script>
+</body>
+</html>
