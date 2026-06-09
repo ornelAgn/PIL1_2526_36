@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Messagerie — Appels, archives & paramètres</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background: var(--darker);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #3b82f6;
+            --accent: #60a5fa;
+            --dark: #1e1b4b;
+            --darker: #0f172a;
+            --light: #f8fafc;
+            --white: #ffffff;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --success: #22c55e;
+            --warning: #f59e0b;
+        }
+
+        .messenger-container {
+            width: 1400px;
+            max-width: 98vw;
+            height: 90vh;
+            min-height: 680px;
+            background: var(--white);
+            border-radius: 28px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 340px;
+            background: var(--white);
+            border-right: 1px solid var(--gray-light);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            padding: 20px 20px 12px 20px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            width: 38px;
+            height: 38px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        .logo-area h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .icon-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--gray);
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 40px;
+            transition: 0.2s;
+            width: 36px;
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-btn:hover {
+            background: var(--light);
+            color: var(--primary);
+        }
+
+        .search-box {
+            background: var(--light);
+            border-radius: 44px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid transparent;
+            margin-top: 8px;
+        }
+
+        .search-box i { color: var(--gray); }
+        .search-box input {
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 0.9rem;
+            width: 100%;
+            color: var(--dark);
+        }
+        .search-box:focus-within {
+            border-color: var(--primary-light);
+            background: var(--white);
+            box-shadow: 0 0 0 2px rgba(99,102,241,0.2);
+        }
+
+        /* ONGLETS SUR UNE SEULE LIGNE (scroll horizontal si trop) */
+        .tabs-container {
+            display: flex;
+            padding: 12px 16px 0 16px;
+            gap: 8px;
+            border-bottom: 1px solid var(--gray-light);
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: thin;
+        }
+        .tabs-container::-webkit-scrollbar {
+            height: 3px;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 8px 16px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-radius: 40px;
+            color: var(--gray);
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .tab-btn i { font-size: 0.85rem; }
+        .tab-btn.active {
+            background: rgba(99,102,241,0.12);
+            color: var(--primary);
+        }
+        .tab-btn:hover:not(.active) {
+            background: var(--light);
+            color: var(--primary-dark);
+        }
+
+        /* CONTACTS LIST */
+        .contacts-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 8px;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 14px;
+            margin: 4px 0;
+            border-radius: 18px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .contact-item:hover { background: var(--light); }
+        .contact-item.active {
+            background: rgba(99,102,241,0.12);
+            border-left: 3px solid var(--primary);
+        }
+        .contact-avatar {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(145deg, var(--primary-light), var(--primary));
+            border-radius: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: white;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .online-dot {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 14px;
+            height: 14px;
+            background: var(--success);
+            border: 2px solid var(--white);
+            border-radius: 50%;
+        }
+        .unread-badge {
+            background: var(--primary);
+            color: white;
+            border-radius: 30px;
+            padding: 2px 8px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        .contact-info { flex: 1; min-width: 0; }
+        .contact-name {
+            font-weight: 700;
+            color: var(--dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        .contact-last-msg {
+            font-size: 0.75rem;
+            color: var(--gray);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 4px;
+        }
+        .contact-time { font-size: 0.7rem; color: var(--gray); }
+
+        /* CHAT AREA */
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--white);
+            overflow: hidden;
+        }
+        .chat-header {
+            padding: 16px 28px;
+            border-bottom: 1px solid var(--gray-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .chat-header-left { display: flex; align-items: center; gap: 14px; }
+        .chat-header-avatar {
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            border-radius: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .chat-header-text h3 { font-size: 1.3rem; font-weight: 700; color: var(--dark); }
+        .status-badge { font-size: 0.75rem; color: var(--success); display: flex; align-items: center; gap: 5px; margin-top: 4px; }
+        .call-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .call-btn {
+            background: var(--light);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            color: var(--dark);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .call-btn:hover { background: var(--primary-light); color: white; transform: scale(1.05); }
+        .menu-dots {
+            background: var(--light);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+        .menu-dots:hover { background: var(--gray-light); color: var(--primary); }
+
+        /* menu trois points - infos partagées */
+        .contact-info-menu {
+            position: absolute;
+            top: 100px;
+            right: 40px;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.15);
+            border: 1px solid var(--gray-light);
+            width: 260px;
+            display: none;
+            z-index: 200;
+            overflow: hidden;
+        }
+        .contact-info-menu.active { display: block; }
+        .info-header {
+            padding: 16px;
+            background: var(--light);
+            font-weight: 700;
+            border-bottom: 1px solid var(--gray-light);
+            color: var(--dark);
+        }
+        .info-item {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: 0.1s;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        .info-item i { width: 24px; color: var(--primary); }
+        .info-item:hover { background: var(--light); }
+
+        /* MESSAGES */
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            background: #fefefe;
+        }
+        .message {
+            display: flex;
+            max-width: 75%;
+            animation: fadeIn 0.2s ease;
+        }
+        .message.incoming { align-self: flex-start; }
+        .message.outgoing { align-self: flex-end; flex-direction: row-reverse; }
+        .message-bubble {
+            padding: 10px 16px;
+            border-radius: 24px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            word-wrap: break-word;
+            line-height: 1.45;
+            font-size: 0.9rem;
+        }
+        .incoming .message-bubble {
+            background: var(--gray-light);
+            color: var(--darker);
+            border-bottom-left-radius: 6px;
+        }
+        .outgoing .message-bubble {
+            background: var(--primary);
+            color: white;
+            border-bottom-right-radius: 6px;
+        }
+        .message-time {
+            font-size: 0.65rem;
+            margin-top: 5px;
+            opacity: 0.7;
+            display: block;
+        }
+        .message-media {
+            max-width: 220px;
+            max-height: 180px;
+            border-radius: 16px;
+            margin-top: 6px;
+            cursor: pointer;
+        }
+        .file-attachment {
+            background: rgba(0,0,0,0.05);
+            padding: 8px 12px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            margin-top: 6px;
+        }
+
+        /* INPUT */
+        .message-input-area {
+            padding: 18px 28px 24px 28px;
+            background: var(--white);
+            border-top: 1px solid var(--gray-light);
+            position: relative;
+        }
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--light);
+            border-radius: 60px;
+            padding: 6px 6px 6px 22px;
+            border: 1px solid var(--gray-light);
+        }
+        .input-wrapper:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+        }
+        .input-wrapper input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 0.95rem;
+            padding: 12px 0;
+            color: var(--dark);
+        }
+        .plus-btn {
+            background: var(--light);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 40px;
+            font-size: 1.4rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+        .send-btn {
+            background: var(--primary);
+            border: none;
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 40px;
+            cursor: pointer;
+        }
+        .attach-menu {
+            position: absolute;
+            bottom: 85px;
+            left: 30px;
+            background: var(--white);
+            border-radius: 28px;
+            box-shadow: 0 20px 35px -8px rgba(0,0,0,0.2);
+            display: none;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            padding: 16px;
+            z-index: 200;
+            border: 1px solid var(--gray-light);
+            width: 280px;
+        }
+        .attach-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 4px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            color: var(--dark);
+        }
+        .attach-item i { font-size: 1.5rem; color: var(--primary); }
+        .attach-item:hover { background: var(--light); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+    </style>
+</head>
+<body>
+<div class="messenger-container">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="header-top">
+                <div class="logo-area">
+                    <div class="logo-icon">ML</div>   <!-- anciennement "Q", maintenant "ML" -->
+                    <h2>Q Search</h2>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn" id="archiveBtn" title="Archives"><i class="fas fa-archive"></i></button>
+                    <button class="icon-btn" id="settingsBtn" title="Paramètres"><i class="fas fa-cog"></i></button>
+                </div>
+            </div>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchContacts" placeholder="Rechercher un contact...">
+            </div>
+        </div>
+        <div class="tabs-container" id="tabsContainer">
+            <button class="tab-btn active" data-tab="all"><i class="fas fa-comment"></i> Tous</button>
+            <button class="tab-btn" data-tab="unread"><i class="fas fa-envelope"></i> Non lues</button>
+            <button class="tab-btn" data-tab="favorites"><i class="fas fa-star"></i> Favoris</button>
+            <button class="tab-btn" data-tab="groups"><i class="fas fa-users"></i> Groupes</button>
+        </div>
+        <div class="contacts-list" id="contactsList"></div>
+    </div>
+
+    <div class="chat-area">
+        <div class="chat-header" id="chatHeader"></div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="message-input-area">
+            <div class="input-wrapper">
+                <input type="text" id="messageInput" placeholder="Message...">
+                <button class="plus-btn" id="plusBtn"><i class="fas fa-plus"></i></button>
+                <button class="send-btn" id="sendMessageBtn"><i class="fas fa-paper-plane"></i></button>
+            </div>
+            <div id="attachMenu" class="attach-menu">
+                <div class="attach-item" data-type="image"><i class="fas fa-image"></i><span>Image</span></div>
+                <div class="attach-item" data-type="document"><i class="fas fa-file-alt"></i><span>Document</span></div>
+                <div class="attach-item" data-type="location"><i class="fas fa-map-marker-alt"></i><span>Localisation</span></div>
+                <div class="attach-item" data-type="poll"><i class="fas fa-chart-simple"></i><span>Sondage</span></div>
+                <div class="attach-item" data-type="gallery"><i class="fas fa-images"></i><span>Galerie</span></div>
+                <div class="attach-item" data-type="camera"><i class="fas fa-camera"></i><span>Caméra</span></div>
+                <div class="attach-item" data-type="contact"><i class="fas fa-address-card"></i><span>Contact</span></div>
+                <div class="attach-item" data-type="event"><i class="fas fa-calendar-alt"></i><span>Événement</span></div>
+                <div class="attach-item" data-type="sticker"><i class="fas fa-smile-wink"></i><span>Sticker</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Menu trois points (infos partagées) -->
+<div id="contactInfoMenu" class="contact-info-menu">
+    <div class="info-header">Infos du contact</div>
+    <div class="info-item" id="sharedMediaItem"><i class="fas fa-images"></i> Médias partagés</div>
+    <div class="info-item" id="sharedFilesItem"><i class="fas fa-file"></i> Fichiers partagés</div>
+    <div class="info-item" id="notificationsItem"><i class="fas fa-bell-slash"></i> Ne pas déranger</div>
+    <div class="info-item" id="blockContactItem"><i class="fas fa-ban"></i> Bloquer</div>
+    <div class="info-item" id="clearChatItem"><i class="fas fa-trash-alt"></i> Effacer l'historique</div>
+</div>
+
+<script>
+    // ========== DONNÉES ==========
+    const currentUserId = "me";
+    const currentUserName = "Moi";
+
+    const contactsData = [
+        { id: "emma", name: "Emma Willer", status: "online", avatarInitial: "EW", isFavorite: true, group: false, unreadCount: 0 },
+        { id: "nathan", name: "Nathan Balvier", status: "offline", avatarInitial: "NB", isFavorite: false, group: false, unreadCount: 1 },
+        { id: "harry", name: "Harry Willer", status: "online", avatarInitial: "HW", isFavorite: true, group: false, unreadCount: 0 },
+        { id: "jordan", name: "Jordan Park", status: "offline", avatarInitial: "JP", isFavorite: false, group: false, unreadCount: 0 },
+        { id: "jack", name: "Jack Davis", status: "online", avatarInitial: "JD", isFavorite: false, group: false, unreadCount: 2 },
+        { id: "eliza", name: "Eliza Stone", status: "offline", avatarInitial: "ES", isFavorite: false, group: false, unreadCount: 0 },
+        { id: "melissa", name: "Melissa Mueller", status: "online", avatarInitial: "MM", isFavorite: false, group: false, unreadCount: 0 },
+        { id: "groupDev", name: "👨‍💻 Groupe Dev", status: "group", avatarInitial: "GD", isFavorite: false, group: true, unreadCount: 3 },
+        { id: "groupAmis", name: "🎉 Cercle Amis", status: "group", avatarInitial: "CA", isFavorite: true, group: true, unreadCount: 0 }
+    ];
+
+    const messagesMap = new Map();
+    const now = new Date();
+    const getTime = (offsetHours = 0) => new Date(now.getTime() - offsetHours * 3600000);
+
+    messagesMap.set("emma", [
+        { id: "e1", senderId: "emma", senderName: "Emma", text: "Morbi aliquet enim a ex maximus", timestamp: getTime(3), attachments: [] },
+        { id: "e2", senderId: "me", senderName: "Moi", text: "Super message !", timestamp: getTime(2), attachments: [] }
+    ]);
+    messagesMap.set("nathan", [
+        { id: "n1", senderId: "nathan", senderName: "Nathan", text: "Lorem ipsum dolor sit amet", timestamp: getTime(24), attachments: [] }
+    ]);
+    messagesMap.set("harry", [
+        { id: "h1", senderId: "harry", senderName: "Harry", text: "Donec nibh orci.", timestamp: getTime(48), attachments: [] }
+    ]);
+    messagesMap.set("groupDev", [
+        { id: "gd1", senderId: "nathan", senderName: "Nathan", text: "On avance sur le sprint ?", timestamp: getTime(5), attachments: [] }
+    ]);
+    messagesMap.set("groupAmis", [
+        { id: "ga1", senderId: "harry", senderName: "Harry", text: "Soirée vendredi ?", timestamp: getTime(30), attachments: [] }
+    ]);
+    ["jordan","jack","eliza","melissa"].forEach(c => {
+        messagesMap.set(c, [{ id: c+"1", senderId: c, senderName: c, text: "Salut !", timestamp: getTime(2), attachments: [] }]);
+    });
+
+    function updateLastMsgPreview(contactId) {
+        const msgs = messagesMap.get(contactId);
+        const contact = contactsData.find(c => c.id === contactId);
+        if (!contact || !msgs?.length) return;
+        const last = msgs[msgs.length-1];
+        let preview = last.text ? (last.text.length>40 ? last.text.substring(0,40)+"..." : last.text) : "📎 Média";
+        if(last.senderId === "me") preview = "Vous: "+preview;
+        contact.lastMsgPreview = preview;
+        contact.lastTime = last.timestamp;
+    }
+    contactsData.forEach(c => updateLastMsgPreview(c.id));
+
+    let activeContactId = "emma";
+    let currentTab = "all";
+    let searchTerm = "";
+
+    // DOM
+    const contactsListEl = document.getElementById("contactsList");
+    const chatHeaderEl = document.getElementById("chatHeader");
+    const chatMessagesContainer = document.getElementById("chatMessages");
+    const messageInput = document.getElementById("messageInput");
+    const sendBtn = document.getElementById("sendMessageBtn");
+    const searchInput = document.getElementById("searchContacts");
+    const plusBtn = document.getElementById("plusBtn");
+    const attachMenu = document.getElementById("attachMenu");
+    const archiveBtn = document.getElementById("archiveBtn");
+    const settingsBtn = document.getElementById("settingsBtn");
+    const contactInfoMenu = document.getElementById("contactInfoMenu");
+
+    function formatTime(date) {
+        const today = new Date();
+        const isToday = date.toDateString() === today.toDateString();
+        if(isToday) return date.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+        const yesterday = new Date(today); yesterday.setDate(today.getDate()-1);
+        if(date.toDateString() === yesterday.toDateString()) return "Hier "+date.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+        return date.toLocaleDateString() + " " + date.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    }
+
+    function renderMessages() {
+        const messages = messagesMap.get(activeContactId) || [];
+        if(!messages.length) { chatMessagesContainer.innerHTML = `<div style="text-align:center;color:var(--gray);margin-top:50px;">Aucun message</div>`; return; }
+        chatMessagesContainer.innerHTML = "";
+        messages.forEach(msg => {
+            const isMe = msg.senderId === "me";
+            const msgDiv = document.createElement("div");
+            msgDiv.className = `message ${isMe ? 'outgoing' : 'incoming'}`;
+            const bubble = document.createElement("div");
+            bubble.className = "message-bubble";
+            if(msg.text) bubble.appendChild(document.createTextNode(msg.text));
+            if(msg.attachments && msg.attachments.length){
+                msg.attachments.forEach(att => {
+                    if(att.type === 'image'){
+                        const img = document.createElement("img");
+                        img.src = att.url;
+                        img.className = "message-media";
+                        bubble.appendChild(img);
+                    } else if(att.type === 'document'){
+                        const link = document.createElement("a");
+                        link.href = att.url;
+                        link.target = "_blank";
+                        link.className = "file-attachment";
+                        link.innerHTML = `<i class="fas fa-file"></i> ${att.name || 'Document'}`;
+                        bubble.appendChild(link);
+                    } else if(att.type === 'sticker'){
+                        const span = document.createElement("span");
+                        span.style.fontSize = "2rem";
+                        span.innerText = att.emoji;
+                        bubble.appendChild(span);
+                    } else if(att.type === 'location'){
+                        const locDiv = document.createElement("div");
+                        locDiv.className = "file-attachment";
+                        locDiv.innerHTML = `<i class="fas fa-map-pin"></i> ${att.address || 'Position partagée'}`;
+                        bubble.appendChild(locDiv);
+                    } else if(att.type === 'poll'){
+                        const pollDiv = document.createElement("div");
+                        pollDiv.className = "file-attachment";
+                        pollDiv.innerHTML = `<i class="fas fa-chart-simple"></i> Sondage : ${att.question}`;
+                        bubble.appendChild(pollDiv);
+                    } else if(att.type === 'event'){
+                        const evDiv = document.createElement("div");
+                        evDiv.className = "file-attachment";
+                        evDiv.innerHTML = `<i class="fas fa-calendar"></i> ${att.title} - ${att.date}`;
+                        bubble.appendChild(evDiv);
+                    } else if(att.type === 'contact'){
+                        const contDiv = document.createElement("div");
+                        contDiv.className = "file-attachment";
+                        contDiv.innerHTML = `<i class="fas fa-user"></i> ${att.contactName}`;
+                        bubble.appendChild(contDiv);
+                    }
+                });
+            }
+            const timeSpan = document.createElement("span");
+            timeSpan.className = "message-time";
+            timeSpan.innerText = formatTime(msg.timestamp);
+            bubble.appendChild(timeSpan);
+            msgDiv.appendChild(bubble);
+            chatMessagesContainer.appendChild(msgDiv);
+        });
+        chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+    }
+
+    // HEADER avec trois points
+    function renderChatHeader() {
+        const contact = contactsData.find(c => c.id === activeContactId);
+        if(!contact) return;
+        const statusText = contact.status === "online" ? "En ligne" : (contact.status === "group" ? "Groupe" : "Hors ligne");
+        const statusColor = contact.status === "online" ? "var(--success)" : (contact.status === "group" ? "var(--secondary)" : "var(--gray)");
+        chatHeaderEl.innerHTML = `
+            <div class="chat-header-left">
+                <div class="chat-header-avatar">${contact.avatarInitial}</div>
+                <div class="chat-header-text">
+                    <h3>${contact.name}</h3>
+                    <div class="status-badge"><i class="fas fa-circle" style="font-size:0.6rem; color:${statusColor}"></i> <span>${statusText}</span></div>
+                </div>
+            </div>
+            <div class="call-actions">
+                <button class="call-btn" id="voiceCallBtn" title="Appel vocal"><i class="fas fa-phone"></i></button>
+                <button class="call-btn" id="videoCallBtn" title="Appel vidéo"><i class="fas fa-video"></i></button>
+                <button class="menu-dots" id="contactMenuBtn" title="Plus d'infos"><i class="fas fa-ellipsis-v"></i></button>
+            </div>
+        `;
+        document.getElementById("voiceCallBtn")?.addEventListener("click", () => alert(`🔊 Appel vocal vers ${contact.name} (simulation)`));
+        document.getElementById("videoCallBtn")?.addEventListener("click", () => alert(`📹 Appel vidéo vers ${contact.name} (simulation)`));
+        const menuBtn = document.getElementById("contactMenuBtn");
+        if(menuBtn){
+            menuBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                contactInfoMenu.classList.toggle("active");
+            });
+        }
+        // click en dehors pour fermer le menu
+        document.addEventListener("click", function closeMenu(e) {
+            if(!menuBtn?.contains(e.target) && !contactInfoMenu.contains(e.target)) {
+                contactInfoMenu.classList.remove("active");
+            }
+        });
+    }
+
+    // filtres
+    function getFilteredContacts() {
+        let list = [...contactsData];
+        if(searchTerm) list = list.filter(c => c.name.toLowerCase().includes(searchTerm.toLowerCase()));
+        if(currentTab === "unread") list = list.filter(c => c.unreadCount > 0);
+        else if(currentTab === "favorites") list = list.filter(c => c.isFavorite);
+        else if(currentTab === "groups") list = list.filter(c => c.group === true);
+        return list;
+    }
+
+    function renderContactsList() {
+        const filtered = getFilteredContacts();
+        contactsListEl.innerHTML = "";
+        filtered.forEach(contact => {
+            const item = document.createElement("div");
+            item.className = `contact-item ${activeContactId === contact.id ? 'active' : ''}`;
+            const onlineIndicator = (contact.status === "online" && !contact.group) ? '<span class="online-dot"></span>' : '';
+            const unreadBadge = (contact.unreadCount > 0) ? `<span class="unread-badge">${contact.unreadCount}</span>` : '';
+            const lastTimeStr = contact.lastTime ? formatTime(contact.lastTime) : "";
+            item.innerHTML = `
+                <div class="contact-avatar">${contact.avatarInitial}${onlineIndicator}</div>
+                <div class="contact-info">
+                    <div class="contact-name">
+                        <span>${contact.name} ${unreadBadge}</span>
+                        <span class="contact-time">${lastTimeStr}</span>
+                    </div>
+                    <div class="contact-last-msg">${escapeHtml(contact.lastMsgPreview || "")}</div>
+                </div>
+            `;
+            item.addEventListener("click", () => {
+                if(activeContactId === contact.id) return;
+                const c = contactsData.find(c=>c.id === contact.id);
+                if(c && c.unreadCount>0) c.unreadCount = 0;
+                activeContactId = contact.id;
+                renderContactsList();
+                renderChatHeader();
+                renderMessages();
+                contactInfoMenu.classList.remove("active");
+            });
+            contactsListEl.appendChild(item);
+        });
+        if(filtered.length === 0) contactsListEl.innerHTML = '<div style="padding:32px;text-align:center;color:var(--gray);">Aucun contact</div>';
+    }
+
+    function escapeHtml(str) { if(!str) return ""; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+
+    // messages
+    function addMessage(contactId, text, attachments = []) {
+        const conv = messagesMap.get(contactId) || [];
+        const newMsg = {
+            id: Date.now().toString(),
+            senderId: "me",
+            senderName: currentUserName,
+            text: text,
+            timestamp: new Date(),
+            attachments: attachments
+        };
+        conv.push(newMsg);
+        messagesMap.set(contactId, conv);
+        updateLastMsgPreview(contactId);
+        if(activeContactId === contactId) renderMessages();
+        renderContactsList();
+        chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+    }
+
+    function sendTextMessage() {
+        const text = messageInput.value.trim();
+        if(text === "") return;
+        addMessage(activeContactId, text, []);
+        messageInput.value = "";
+    }
+
+    function handleAttach(type) {
+        let attachment = null;
+        switch(type){
+            case 'image': attachment = { type: 'image', url: "https://picsum.photos/200/150?rand="+Date.now(), name: 'image.jpg' }; break;
+            case 'document': attachment = { type: 'document', url: "#", name: 'fichier.pdf' }; break;
+            case 'location': attachment = { type: 'location', address: '48.8566° N, 2.3522° E' }; break;
+            case 'poll': attachment = { type: 'poll', question: 'Préférez-vous le café ?' }; break;
+            case 'gallery': attachment = { type: 'image', url: "https://picsum.photos/200/150?gal", name: 'galerie.jpg' }; break;
+            case 'camera': attachment = { type: 'image', url: "https://picsum.photos/200/150?cam", name: 'photo_camera.jpg' }; break;
+            case 'contact': attachment = { type: 'contact', contactName: 'Sophie Martin' }; break;
+            case 'event': attachment = { type: 'event', title: 'Meetup', date: '30 juin 2025' }; break;
+            case 'sticker': const stickers = ['😀','😂','😍','🎉']; attachment = { type: 'sticker', emoji: stickers[Math.floor(Math.random()*stickers.length)] }; break;
+        }
+        if(attachment) addMessage(activeContactId, "", [attachment]);
+        attachMenu.style.display = "none";
+    }
+
+    // Événements
+    plusBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        attachMenu.style.display = attachMenu.style.display === "grid" ? "none" : "grid";
+    });
+    document.addEventListener("click", (e) => {
+        if(!attachMenu.contains(e.target) && e.target !== plusBtn) attachMenu.style.display = "none";
+    });
+    document.querySelectorAll(".attach-item").forEach(item => {
+        item.addEventListener("click", () => handleAttach(item.dataset.type));
+    });
+    sendBtn.addEventListener("click", sendTextMessage);
+    messageInput.addEventListener("keypress", (e) => { if(e.key === "Enter") sendTextMessage(); });
+
+    // Archives et paramètres
+    archiveBtn.addEventListener("click", () => alert("📦 Archives : conversations archivées (simulation)"));
+    settingsBtn.addEventListener("click", () => alert("⚙️ Paramètres généraux (thème, notifications, etc.)"));
+
+    // Actions du menu trois points (infos partagées)
+    document.getElementById("sharedMediaItem")?.addEventListener("click", () => alert("📸 Médias partagés avec " + contactsData.find(c=>c.id===activeContactId)?.name));
+    document.getElementById("sharedFilesItem")?.addEventListener("click", () => alert("📄 Fichiers partagés"));
+    document.getElementById("notificationsItem")?.addEventListener("click", () => alert("🔕 Notifications désactivées pour cette conversation"));
+    document.getElementById("blockContactItem")?.addEventListener("click", () => alert("🚫 Contact bloqué (simulation)"));
+    document.getElementById("clearChatItem")?.addEventListener("click", () => {
+        if(confirm("Effacer tout l'historique avec ce contact ?")) {
+            messagesMap.set(activeContactId, []);
+            updateLastMsgPreview(activeContactId);
+            renderMessages();
+            renderContactsList();
+        }
+    });
+
+    // Onglets avec scroll horizontal
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            currentTab = btn.dataset.tab;
+            renderContactsList();
+            const filteredIds = getFilteredContacts().map(c=>c.id);
+            if(!filteredIds.includes(activeContactId) && filteredIds.length) activeContactId = filteredIds[0];
+            renderChatHeader();
+            renderMessages();
+        });
+    });
+    searchInput.addEventListener("input", (e) => { searchTerm = e.target.value; renderContactsList(); });
+
+    renderContactsList();
+    renderChatHeader();
+    renderMessages();
+</script>
+</body>
+</html>
