@@ -31,24 +31,35 @@ Par exemple, si le projet est déjà sur votre machine, ouvrez un terminal dans 
 ```bash
 python -m venv venv
 ```
+Ouvrez un terminal PowerShell en tant qu’administrateur et exécutez :
+
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 Activez-le :
-- **Windows** : `venv\Scripts\activate`
+- **Windows** : `.\venv\Scripts\activate`
 - **macOS/Linux** : `source venv/bin/activate`
 
 ### 3. Installer les dépendances
-
+va dans :  cd backend 
 ```bash
 pip install -r requirements.txt
+
+ou
+
+python.exe -m pip install --upgrade pip
 ```
 
 Le fichier `requirements.txt` contient :
 ```
-Django>=4.2,<5.0
-mysqlclient
+Django==4.2
+djangorestframework==3.14
+djangorestframework-simplejwt==5.3
+django-cors-headers==4.3
+mysqlclient==2.2
+python-dotenv==1.0
+    
 ```
 
-> Si vous souhaitez utiliser SQLite, supprimez `mysqlclient` du fichier ou installez simplement Django.
 
 ### 4. Configurer la base de données
 
@@ -98,7 +109,27 @@ DATABASES = {
 
 Placez-vous dans le dossier `backend/` :
 
+
+pip install django
+
+pip show django
+pip install pymysql
 ```bash
+
+Assurez-vous que votre base MySQL existe et que les identifiants dans settings.py sont corrects :
+
+python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'projet_db',      # nom de votre base
+        'USER': 'root',            # votre utilisateur MySQL
+        'PASSWORD': 'votre_mot_de_passe',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
+}
+
 cd backend
 python manage.py makemigrations core
 python manage.py migrate
