@@ -1,0 +1,17 @@
+{% extends "dashboard_base.html" %}
+{% block title %}Conversation{% endblock %}
+{% block content %}
+<div class="section">
+    <h2>Conversation</h2>
+    <div style="margin-bottom: 2rem;">
+        {% for msg in messages_list %}
+            <p><strong>{{ msg.sender.username }}</strong> : {{ msg.content }} <small>({{ msg.created_at|date:"d/m H:i" }})</small></p>
+        {% endfor %}
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        <textarea name="content" rows="3" placeholder="Votre message..." style="width:100%; padding:0.5rem;"></textarea><br>
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+    </form>
+</div>
+{% endblock %}

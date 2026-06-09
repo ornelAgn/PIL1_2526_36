@@ -1,0 +1,18 @@
+{% extends "dashboard_base.html" %}
+{% block title %}Badges{% endblock %}
+{% block content %}
+<div class="section">
+    <h2>Vos badges</h2>
+    <div class="badge-grid">
+        {% for user_badge in user_badges %}
+            <div class="badge-card">
+                <span class="badge-icon">{{ user_badge.badge.icon_class }}</span>
+                <h3>{{ user_badge.badge.name }}</h3>
+                <p>{{ user_badge.badge.description }}</p>
+            </div>
+        {% empty %}
+            <p>Vous n'avez pas encore gagné de badges.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

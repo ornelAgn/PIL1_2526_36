@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}IFRI Mentor - Tableau de bord{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #3b82f6;
+            --dark: #1e1b4b;
+            --darker: #0f172a;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --white: #ffffff;
+            --radius: 12px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            margin: 0;
+        }
+
+       .dashboard-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;                  /* un peu plus fin */
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    z-index: 1000;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.dashboard-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.dashboard-logo {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #1e1b4b;
+    text-decoration: none;
+    white-space: nowrap;
+    letter-spacing: -0.3px;
+}
+
+.dashboard-nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard-nav-links li a {
+    text-decoration: none;
+    color: #64748b;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 0.4rem 0;
+    position: relative;
+    transition: color 0.2s;
+    white-space: nowrap;
+}
+
+.dashboard-nav-links li a:hover,
+.dashboard-nav-links li a.active {
+    color: #6366f1;
+}
+
+/* Ligne active discrète */
+.dashboard-nav-links li a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #6366f1;
+    border-radius: 2px;
+}
+.dashboard-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 5.5rem;
+    margin-right: 0.5rem;   /* réduit le décalage vers le bord */
+}
+
+.logout-link {
+    color: #64748b;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+    white-space: nowrap;
+}
+.logout-link:hover {
+    color: #ef4444;
+}
+
+.dashboard-profile-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: #1e1b4b;
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.avatar-circle {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, #6366f1, #3b82f6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.profile-name {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Responsive – masque les liens texte en dessous de 900px, affiche une icône burger (à implémenter plus tard) */
+@media (max-width: 900px) {
+    .dashboard-nav-links {
+        display: none;
+    }
+    .dashboard-nav-left {
+        gap: 1rem;
+    }
+}
+    </style>
+</head>
+<body>
+ <nav class="dashboard-navbar">
+    <div class="dashboard-nav-left">
+        <a href="{% url 'accueil' %}" class="dashboard-logo">IFRI Mentor</a>
+        <ul class="dashboard-nav-links">
+            {% with current_url=request.resolver_match.url_name %}
+            <li><a href="{% url 'dash' %}" class="{% if current_url == 'dash' %}active{% endif %}">Tableau de bord</a></li>
+            <li><a href="{% url 'messagerie' %}" class="{% if current_url == 'messagerie' or current_url == 'conversation_detail' %}active{% endif %}">Messagerie</a></li>
+            <li><a href="{% url 'badges' %}" class="{% if current_url == 'badges' %}active{% endif %}">Badges</a></li>
+            {% endwith %}
+        </ul>
+    </div>
+
+    <div class="dashboard-nav-right">
+        <a href="{% url 'deconnexion' %}" class="logout-link">Déconnexion</a>
+        <a href="#" class="dashboard-profile-btn">
+        </a>
+    </div>
+</nav>
+
+    <main class="dashboard-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <script>
+        // Fonction pour switcher entre les modes (appelée depuis le mini-switcher)
+        function switchRole(mode) {
+            // Bascule des boutons actifs
+            document.getElementById('btn-mentee').classList.toggle('active', mode === 'mentee');
+            const mentorBtn = document.getElementById('btn-mentor');
+            if (mentorBtn) mentorBtn.classList.toggle('active', mode === 'mentor');
+
+            // Appelle la fonction définie dans dash.html (showMode)
+            if (typeof showMode === 'function') {
+                showMode(mode);
+            }
+        }
+    </script>
+</body>
+</html>

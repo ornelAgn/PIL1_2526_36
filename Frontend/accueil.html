@@ -1,0 +1,521 @@
+{% extends "base.html" %}
+{% block title %}IFRI Mentor - Accueil{% endblock %}
+{% block content %}
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-bg">
+            <div class="hero-shape hero-shape-1"></div>
+            <div class="hero-shape hero-shape-2"></div>
+            <div class="hero-shape hero-shape-3"></div>
+        </div>
+        <div class="hero-content">
+            <h1>
+                Partagez vos <span class="highlight">compétences</span><br>
+                et progressez ensemble
+            </h1>
+            <p class="hero-subtitle">
+                La plateforme qui connecte les étudiants de l'IFRI pour un mentorat 
+                académique mutuel.
+            </p>
+            <div class="hero-buttons">
+    <a href="#explore" class="btn btn-primary">Trouver un mentor</a>
+    {% if not user.is_authenticated %}
+        <a href="{% url 'connexion' %}" class="btn btn-outline">Se connecter</a>
+    {% else %}
+        <a href="{% url 'dash' %}" class="btn btn-outline">Tableau de bord</a>
+    {% endif %}
+</div>
+        </div>
+    </section>
+
+    <!-- Features, How it works, Mentors, Testimonials, CTA : gardez TOUT le reste de votre contenu actuel -->
+      <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-header fade-in">
+            <span class="section-tag">Fonctionnalités</span>
+            <h2 class="section-title">Tout ce dont vous avez besoin pour réussir</h2>
+            <p class="section-desc">
+                Notre plateforme offre des outils puissants pour faciliter l'apprentissage 
+                collaboratif entre étudiants de l'IFRI.
+            </p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card fade-in">
+                <div class="feature-icon purple">🎯</div>
+                <h3>Mentorat Personnalisé</h3>
+                <p>Trouvez un mentor ou un mentoré selon vos besoins spécifiques en matières techniques, scientifiques ou de gestion.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon blue">🔍</div>
+                <h3>Recherche Avancée</h3>
+                <p>Algorithme de filtrage intelligent pour trouver rapidement l'étudiant avec les compétences exactes dont vous avez besoin.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon cyan">💬</div>
+                <h3>Messagerie Intégrée</h3>
+                <p>Communiquez directement avec votre mentor ou mentoré via notre système de messagerie sécurisé et intuitif.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon green">📊</div>
+                <h3>Suivi de Progrès</h3>
+                <p>Suivez votre évolution académique avec des tableaux de bord et des statistiques de progression détaillées.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon orange">🏆</div>
+                <h3>Système de Badges</h3>
+                <p>Gamifiez votre apprentissage avec des badges et récompenses pour encourager la participation active.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon pink">📅</div>
+                <h3>Planification Flexible</h3>
+                <p>Planifiez vos sessions de mentorat selon vos disponibilités avec un calendrier intégré et des rappels automatiques.</p>
+            </div>
+        </div>
+        
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="section-header fade-in">
+            <span class="section-tag">Processus</span>
+            <h2 class="section-title">Comment ça marche ?</h2>
+            <p class="section-desc">
+                En quelques étapes simples, commencez votre parcours de mentorat académique.
+            </p>
+        </div>
+        <div class="steps-container">
+            <div class="step-line"></div>
+            <div class="step fade-in">
+                <div class="step-number">1</div>
+                <h3>Créez votre compte</h3>
+                <p>Inscrivez-vous avec votre email IFRI et indiquez vos compétences ou les matières où vous avez besoin d'aide.</p>
+            </div>
+            <div class="step fade-in">
+                <div class="step-number">2</div>
+                <h3>Trouvez votre match</h3>
+                <p>Utilisez notre recherche avancée pour filtrer par compétences, niveau et disponibilité.</p>
+            </div>
+            <div class="step fade-in">
+                <div class="step-number">3</div>
+                <h3>Apprenez ensemble</h3>
+                <p>Planifiez vos sessions, échangez des connaissances et progressez mutuellement dans vos études.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Demo -->
+    <section class="search-demo" id="explore">
+        <div class="section-header fade-in">
+            <span class="section-tag">Recherche Avancée</span>
+            <h2 class="section-title">Trouvez le mentor parfait en quelques secondes</h2>
+            <p class="section-desc">
+                Notre algorithme de filtrage intelligent vous permet de rechercher 
+                rapidement les étudiants avec les compétences exactes dont vous avez besoin.
+            </p>
+        </div>
+       
+    </section>
+
+    <!-- Mentors Section - Carrousel Déroulant -->
+<section class="mentors" id="mentors">
+    <div class="section-header fade-in">
+        <span class="section-tag">Top Mentors</span>
+        <h2 class="section-title">Nos mentors les plus actifs</h2>
+        <p class="section-desc">
+            Découvrez les étudiants qui partagent leurs connaissances 
+            et aident la communauté IFRI à progresser.
+        </p>
+    </div>
+    
+    <div class="mentors-marquee-wrapper">
+        <div class="mentors-marquee-track">
+            <!-- Carte 1 -->
+            <div class="mentor-card">
+                <div class="mentor-img">
+                    <div class="mentor-avatar">KL</div>
+                </div>
+                <div class="mentor-content">
+                    <div class="mentor-name">Kossi Lawson</div>
+                    <div class="mentor-role">Master 2 · Développement</div>
+                    <div class="mentor-skills">
+                        <span class="mentor-skill">Python</span>
+                        <span class="mentor-skill">React</span>
+                        <span class="mentor-skill">Node.js</span>
+                    </div>
+                    <div class="mentor-rating">
+                        <span class="stars">★★★★★</span>
+                        <span>48 sessions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte 2 -->
+            <div class="mentor-card">
+                <div class="mentor-img">
+                    <div class="mentor-avatar">FA</div>
+                </div>
+                <div class="mentor-content">
+                    <div class="mentor-name">Fatou Amadou</div>
+                    <div class="mentor-role">Licence 3 · Data Science</div>
+                    <div class="mentor-skills">
+                        <span class="mentor-skill">Python</span>
+                        <span class="mentor-skill">Pandas</span>
+                        <span class="mentor-skill">ML</span>
+                    </div>
+                    <div class="mentor-rating">
+                        <span class="stars">★★★★★</span>
+                        <span>35 sessions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte 3 -->
+            <div class="mentor-card">
+                <div class="mentor-img">
+                    <div class="mentor-avatar">PB</div>
+                </div>
+                <div class="mentor-content">
+                    <div class="mentor-name">Paul Boko</div>
+                    <div class="mentor-role">Master 1 · Cybersécurité</div>
+                    <div class="mentor-skills">
+                        <span class="mentor-skill">Linux</span>
+                        <span class="mentor-skill">Réseaux</span>
+                        <span class="mentor-skill">Crypto</span>
+                    </div>
+                    <div class="mentor-rating">
+                        <span class="stars">★★★★☆</span>
+                        <span>28 sessions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte 4 -->
+            <div class="mentor-card">
+                <div class="mentor-img">
+                    <div class="mentor-avatar">GN</div>
+                </div>
+                <div class="mentor-content">
+                    <div class="mentor-name">Grace N'Gassa</div>
+                    <div class="mentor-role">Licence 2 · Algorithmes</div>
+                    <div class="mentor-skills">
+                        <span class="mentor-skill">C++</span>
+                        <span class="mentor-skill">Java</span>
+                        <span class="mentor-skill">Algo</span>
+                    </div>
+                    <div class="mentor-rating">
+                        <span class="stars">★★★★★</span>
+                        <span>42 sessions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte 5 -->
+            <div class="mentor-card">
+                <div class="mentor-img">
+                    <div class="mentor-avatar">AM</div>
+                </div>
+                <div class="mentor-content">
+                    <div class="mentor-name">Aminata Mensah</div>
+                    <div class="mentor-role">Licence 3 · Web Dev</div>
+                    <div class="mentor-skills">
+                        <span class="mentor-skill">HTML</span>
+                        <span class="mentor-skill">CSS</span>
+                        <span class="mentor-skill">JS</span>
+                    </div>
+                    <div class="mentor-rating">
+                        <span class="stars">★★★★★</span>
+                        <span>56 sessions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte 6 -->
+            <div class="mentor-card">
+                <div class="mentor-img">
+                    <div class="mentor-avatar">JD</div>
+                </div>
+                <div class="mentor-content">
+                    <div class="mentor-name">Jean Dossou</div>
+                    <div class="mentor-role">Master 2 · IA</div>
+                    <div class="mentor-skills">
+                        <span class="mentor-skill">TensorFlow</span>
+                        <span class="mentor-skill">NLP</span>
+                        <span class="mentor-skill">Python</span>
+                    </div>
+                    <div class="mentor-rating">
+                        <span class="stars">★★★★★</span>
+                        <span>39 sessions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte 7 -->
+            <div class="mentor-card">
+                <div class="mentor-img">
+                    <div class="mentor-avatar">SK</div>
+                </div>
+                <div class="mentor-content">
+                    <div class="mentor-name">Sonia Kiki</div>
+                    <div class="mentor-role">Licence 2 · Maths</div>
+                    <div class="mentor-skills">
+                        <span class="mentor-skill">Algèbre</span>
+                        <span class="mentor-skill">Analyse</span>
+                        <span class="mentor-skill">Stats</span>
+                    </div>
+                    <div class="mentor-rating">
+                        <span class="stars">★★★★★</span>
+                        <span>45 sessions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte 8 -->
+            <div class="mentor-card">
+                <div class="mentor-img">
+                    <div class="mentor-avatar">MO</div>
+                </div>
+                <div class="mentor-content">
+                    <div class="mentor-name">Marc Ouedraogo</div>
+                    <div class="mentor-role">Master 1 · BDD</div>
+                    <div class="mentor-skills">
+                        <span class="mentor-skill">SQL</span>
+                        <span class="mentor-skill">Oracle</span>
+                        <span class="mentor-skill">NoSQL</span>
+                    </div>
+                    <div class="mentor-rating">
+                        <span class="stars">★★★★☆</span>
+                        <span>33 sessions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== DUPLICATA pour boucle infinie ===== -->
+            <!-- Carte 1 (dup) -->
+            <div class="mentor-card">
+                <div class="mentor-img">
+                    <div class="mentor-avatar">KL</div>
+                </div>
+                <div class="mentor-content">
+                    <div class="mentor-name">Kossi Lawson</div>
+                    <div class="mentor-role">Master 2 · Développement</div>
+                    <div class="mentor-skills">
+                        <span class="mentor-skill">Python</span>
+                        <span class="mentor-skill">React</span>
+                        <span class="mentor-skill">Node.js</span>
+                    </div>
+                    <div class="mentor-rating">
+                        <span class="stars">★★★★★</span>
+                        <span>48 sessions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte 2 (dup) -->
+            <div class="mentor-card">
+                <div class="mentor-img">
+                    <div class="mentor-avatar">FA</div>
+                </div>
+                <div class="mentor-content">
+                    <div class="mentor-name">Fatou Amadou</div>
+                    <div class="mentor-role">Licence 3 · Data Science</div>
+                    <div class="mentor-skills">
+                        <span class="mentor-skill">Python</span>
+                        <span class="mentor-skill">Pandas</span>
+                        <span class="mentor-skill">ML</span>
+                    </div>
+                    <div class="mentor-rating">
+                        <span class="stars">★★★★★</span>
+                        <span>35 sessions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte 3 (dup) -->
+            <div class="mentor-card">
+                <div class="mentor-img">
+                    <div class="mentor-avatar">PB</div>
+                </div>
+                <div class="mentor-content">
+                    <div class="mentor-name">Paul Boko</div>
+                    <div class="mentor-role">Master 1 · Cybersécurité</div>
+                    <div class="mentor-skills">
+                        <span class="mentor-skill">Linux</span>
+                        <span class="mentor-skill">Réseaux</span>
+                        <span class="mentor-skill">Crypto</span>
+                    </div>
+                    <div class="mentor-rating">
+                        <span class="stars">★★★★☆</span>
+                        <span>28 sessions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte 4 (dup) -->
+            <div class="mentor-card">
+                <div class="mentor-img">
+                    <div class="mentor-avatar">GN</div>
+                </div>
+                <div class="mentor-content">
+                    <div class="mentor-name">Grace N'Gassa</div>
+                    <div class="mentor-role">Licence 2 · Algorithmes</div>
+                    <div class="mentor-skills">
+                        <span class="mentor-skill">C++</span>
+                        <span class="mentor-skill">Java</span>
+                        <span class="mentor-skill">Algo</span>
+                    </div>
+                    <div class="mentor-rating">
+                        <span class="stars">★★★★★</span>
+                        <span>42 sessions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte 5 (dup) -->
+            <div class="mentor-card">
+                <div class="mentor-img">
+                    <div class="mentor-avatar">AM</div>
+                </div>
+                <div class="mentor-content">
+                    <div class="mentor-name">Aminata Mensah</div>
+                    <div class="mentor-role">Licence 3 · Web Dev</div>
+                    <div class="mentor-skills">
+                        <span class="mentor-skill">HTML</span>
+                        <span class="mentor-skill">CSS</span>
+                        <span class="mentor-skill">JS</span>
+                    </div>
+                    <div class="mentor-rating">
+                        <span class="stars">★★★★★</span>
+                        <span>56 sessions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte 6 (dup) -->
+            <div class="mentor-card">
+                <div class="mentor-img">
+                    <div class="mentor-avatar">JD</div>
+                </div>
+                <div class="mentor-content">
+                    <div class="mentor-name">Jean Dossou</div>
+                    <div class="mentor-role">Master 2 · IA</div>
+                    <div class="mentor-skills">
+                        <span class="mentor-skill">TensorFlow</span>
+                        <span class="mentor-skill">NLP</span>
+                        <span class="mentor-skill">Python</span>
+                    </div>
+                    <div class="mentor-rating">
+                        <span class="stars">★★★★★</span>
+                        <span>39 sessions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte 7 (dup) -->
+            <div class="mentor-card">
+                <div class="mentor-img">
+                    <div class="mentor-avatar">SK</div>
+                </div>
+                <div class="mentor-content">
+                    <div class="mentor-name">Sonia Kiki</div>
+                    <div class="mentor-role">Licence 2 · Maths</div>
+                    <div class="mentor-skills">
+                        <span class="mentor-skill">Algèbre</span>
+                        <span class="mentor-skill">Analyse</span>
+                        <span class="mentor-skill">Stats</span>
+                    </div>
+                    <div class="mentor-rating">
+                        <span class="stars">★★★★★</span>
+                        <span>45 sessions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte 8 (dup) -->
+            <div class="mentor-card">
+                <div class="mentor-img">
+                    <div class="mentor-avatar">MO</div>
+                </div>
+                <div class="mentor-content">
+                    <div class="mentor-name">Marc Ouedraogo</div>
+                    <div class="mentor-role">Master 1 · BDD</div>
+                    <div class="mentor-skills">
+                        <span class="mentor-skill">SQL</span>
+                        <span class="mentor-skill">Oracle</span>
+                        <span class="mentor-skill">NoSQL</span>
+                    </div>
+                    <div class="mentor-rating">
+                        <span class="stars">★★★★☆</span>
+                        <span>33 sessions</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials">
+        <div class="section-header fade-in">
+            <span class="section-tag">Témoignages</span>
+            <h2 class="section-title">Ce que disent nos étudiants</h2>
+            <p class="section-desc">
+                Découvrez les expériences de ceux qui utilisent déjà la plateforme 
+                pour progresser dans leurs études.
+            </p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card fade-in">
+                <div class="quote-icon">"</div>
+                <p class="testimonial-text">
+                    Grâce à IFRI Mentor, j'ai pu surmonter mes difficultés en programmation orientée objet. 
+                    Mon mentor m'a expliqué les concepts avec patience et pédagogie. J'ai réussi mon examen 
+                    avec une excellente note !
+                </p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">MK</div>
+                    <div class="testimonial-info">
+                        <h4>Marie Kponton</h4>
+                        <p>Licence 2 · IFRI</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card fade-in">
+                <div class="quote-icon">"</div>
+                <p class="testimonial-text">
+                    Devenir mentor m'a permis de consolider mes connaissances tout en aidant mes camarades. 
+                    La recherche avancée est super pratique pour trouver des étudiants qui ont besoin 
+                    exactement de ce que je maîtrise.
+                </p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">AO</div>
+                    <div class="testimonial-info">
+                        <h4>Alexandre Osséni</h4>
+                        <p>Master 1 · IFRI</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card fade-in">
+                <div class="quote-icon">"</div>
+                <p class="testimonial-text">
+                    La plateforme est intuitive et la communauté est très active. J'ai trouvé un mentor 
+                    pour les bases de données en moins de 5 minutes. Les sessions sont bien organisées 
+                    et le suivi est excellent.
+                </p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">YA</div>
+                    <div class="testimonial-info">
+                        <h4>Yves Ahouansou</h4>
+                        <p>Licence 1 · IFRI</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+   
+
+    <!-- Footer -->
+   
+
+{% endblock %}

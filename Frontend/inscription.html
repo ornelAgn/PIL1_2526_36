@@ -1,251 +1,313 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Inscription - Profil freelance</title>
-  <style>
-    :root {
-      --primary: #6366f1;
-      --primary-dark: #4f46e5;
-      --primary-light: #818cf8;
-      --secondary: #3b82f6;
-      --accent: #60a5fa;
-      --dark: #1e1b4b;
-      --darker: #0f172a;
-      --light: #f8fafc;
-      --white: #ffffff;
-      --gray: #64748b;
-      --gray-light: #e2e8f0;
-      --success: #22c55e;
-      --warning: #f59e0b;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Inscription – IFRI Mentor</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #3b82f6;
+            --accent: #60a5fa;
+            --dark: #1e1b4b;
+            --darker: #0f172a;
+            --light: #f8fafc;
+            --white: #ffffff;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
 
-    * { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: #dfeafe; }
+        * { box-sizing: border-box; }
+        html, body { height: 100%; margin: 0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: #dfeafe; }
 
-    .wrap {
-      display: flex;
-      justify-content: center;
-      align-items: stretch;
-      min-height: 100vh;
-      padding: 40px 16px;
-    }
+        .wrap {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            min-height: 100vh;
+            padding: 40px 16px;
+        }
 
-    .card {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      width: min(1100px, 92vw);
-      height: min(700px, 82vh); /* légèrement augmenté pour les nouveaux champs */
-      background: #fff;
-      border-radius: 14px;
-      box-shadow: 0 10px 25px rgba(0,0,0,.08);
-      overflow: hidden;
-    }
+        .card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: min(1100px, 92vw);
+            height: auto;
+            min-height: 700px;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 10px 25px rgba(0,0,0,.08);
+            overflow: hidden;
+        }
 
-    .left {
-      padding: 34px 40px;
-      background: #ffffff;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      border-right: 1px solid var(--gray-light);
-    }
+        .left {
+            padding: 34px 40px;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            border-right: 1px solid var(--gray-light);
+        }
 
-    .left h1 {
-      font-size: 22px;
-      color: var(--dark);
-      margin: 4px 0 10px;
-    }
+        .left h1 {
+            font-size: 22px;
+            color: var(--dark);
+            margin: 4px 0 10px;
+        }
 
-    .hint {
-      font-size: 13px;
-      color: var(--gray);
-      margin-bottom: 6px;
-    }
+        .hint {
+            font-size: 13px;
+            color: var(--gray);
+            margin-bottom: 6px;
+        }
 
-    form {
-      display: grid;
-      gap: 12px;
-      margin-top: 6px;
-    }
+        form {
+            display: grid;
+            gap: 12px;
+            margin-top: 6px;
+        }
 
-    .row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
 
-    label {
-      font-size: 12px;
-      color: #374151;
-      display: block;
-      margin-bottom: 6px;
-    }
+        .full {
+            grid-column: 1 / -1;
+        }
 
-    .asterisk {
-      color: #ef4444; /* rouge */
-      margin-right: 2px;
-      font-weight: bold;
-    }
+        label {
+            font-size: 12px;
+            color: #374151;
+            display: block;
+            margin-bottom: 4px;
+        }
 
-    input[type="text"],
-    input[type="email"],
-    input[type="password"],
-    input[type="tel"],
-    textarea {
-      width: 100%;
-      padding: 12px 12px;
-      border-radius: 8px;
-      border: 1px solid var(--gray-light);
-      background: #fff;
-      font-size: 14px;
-      outline: none;
-      transition: box-shadow .2s ease, border-color .2s;
-      font-family: inherit;
-    }
+        .asterisk {
+            color: var(--danger);
+            margin-right: 2px;
+            font-weight: bold;
+        }
 
-    input:focus,
-    textarea:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 4px rgba(99,102,241,.15);
-    }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--gray-light);
+            background: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: box-shadow .2s ease, border-color .2s;
+            font-family: inherit;
+        }
 
-    textarea {
-      resize: vertical;
-      min-height: 70px;
-    }
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99,102,241,.15);
+        }
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px 16px;
-      border: none;
-      border-radius: 8px;
-      background: var(--primary);
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform .05s ease-in-out;
-    }
+        textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
 
-    .btn:active { transform: translateY(1px); }
-    .btn.secondary {
-      background: #e8eefc;
-      color: var(--primary);
-      border: 1px solid var(--primary);
-    }
+        .errorlist {
+            list-style: none;
+            padding-left: 0;
+            margin: 4px 0 0;
+            color: var(--danger);
+            font-size: 12px;
+        }
 
-    .footer-cta {
-      margin-top: 6px;
-      font-size: 12px;
-      color: var(--gray);
-    }
+        .helptext {
+            font-size: 11px;
+            color: var(--gray);
+            display: block;
+            margin-top: 2px;
+        }
 
-    .right {
-      padding: 34px 28px;
-      background: #f6f8fe;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 14px;
-      position: relative;
-    }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform .05s ease-in-out, background .2s;
+            font-size: 15px;
+        }
 
-    .card-illus {
-      width: 100%;
-      max-width: 420px;
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 0 6px 14px rgba(0,0,0,.08);
-      object-fit: cover;
-      background: #fff;
-    }
+        .btn:hover { background: var(--primary-dark); }
+        .btn:active { transform: translateY(1px); }
 
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: #e9f0ff;
-      color: var(--primary);
-      font-weight: 600;
-      font-size: 12px;
-    }
+        .footer-cta {
+            margin-top: 6px;
+            font-size: 12px;
+            color: var(--gray);
+        }
 
-    @media (max-width: 900px) {
-      .card { grid-template-columns: 1fr; height: auto; }
-      .left { border-right: none; border-bottom: 1px solid var(--gray-light); }
-      .right { padding: 24px; }
-    }
-  </style>
+        .footer-cta a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .right {
+            padding: 34px 28px;
+            background: #f6f8fe;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            position: relative;
+        }
+
+        .card-illus {
+            width: 100%;
+            max-width: 420px;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 6px 14px rgba(0,0,0,.08);
+            object-fit: cover;
+            background: #fff;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: #e9f0ff;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        @media (max-width: 900px) {
+            .card { grid-template-columns: 1fr; height: auto; }
+            .left { border-right: none; border-bottom: 1px solid var(--gray-light); }
+            .right { padding: 24px; }
+        }
+    </style>
 </head>
 <body>
-  <div class="wrap">
-    <section class="card" aria-label="Formulaire d'inscription inspirant">
-      <!-- Colonne gauche : formulaire -->
-      <div class="left">
-        <h1>Créez votre compte MentorLink</h1>
-        <p class="hint">Remplissez vos informations pour démarrer rapidement.</p>
+    <div class="wrap">
+        <section class="card" aria-label="Formulaire d'inscription IFRI Mentor">
+            <!-- Colonne gauche : formulaire -->
+            <div class="left">
+                <h1>Créez votre compte IFRI Mentor</h1>
+                <p class="hint">Remplissez vos informations académiques pour commencer.</p>
 
-        <form action="#" method="post" autocomplete="section-solo">
-          <div class="row">
-            <div class="field">
-              <label for="prenom"><span class="asterisk">*</span> Prénom</label>
-              <input type="text" id="prenom" name="prenom" placeholder="Votre prénom" required />
-            </div>
-            <div class="field">
-              <label for="nom"><span class="asterisk">*</span> Nom</label>
-              <input type="text" id="nom" name="nom" placeholder="Votre nom" required />
-            </div>
-          </div>
+                <form method="post" novalidate>
+                    {% csrf_token %}
 
-          <div class="row">
-            <div class="field">
-              <label for="email"><span class="asterisk">*</span> Email</label>
-              <input type="email" id="email" name="email" placeholder="prenom@exemple.com" required />
-            </div>
-            <div class="field">
-              <label for="tel"><span class="asterisk">*</span> Téléphone</label>
-              <input type="tel" id="tel" name="tel" placeholder="01 23 45 67 89" required />
-            </div>
-          </div>
+                    {# Erreurs globales #}
+                    {% if form.non_field_errors %}
+                        <div class="errorlist">{{ form.non_field_errors }}</div>
+                    {% endif %}
 
-          <div class="row">
-            <div class="field" style="grid-column: 1 / -1;">
-              <label for="motdepasse"><span class="asterisk">*</span> Mot de passe</label>
-              <input type="password" id="motdepasse" name="motdepasse" placeholder="Choisissez un mot de passe" required />
-            </div>
-          </div>
+                    {# Nom d'utilisateur & Email #}
+                    <div class="row">
+                        <div class="field">
+                            <label for="id_username"><span class="asterisk">*</span> Nom d'utilisateur</label>
+                            <input type="text" name="username" id="id_username" placeholder="Nom public" value="{{ form.username.value|default:'' }}" required>
+                            {{ form.username.errors }}
+                        </div>
+                        <div class="field">
+                            <label for="id_email"><span class="asterisk">*</span> Adresse email</label>
+                            <input type="email" name="email" id="id_email" placeholder="email@gmail.com" value="{{ form.email.value|default:'' }}" required>
+                            {{ form.email.errors }}
+                        </div>
+                    </div>
 
-          <!-- Nouveaux champs : points forts et points faibles -->
-          <div class="row">
-            <div class="field">
-              <label for="points-forts"><span class="asterisk">*</span> Points forts</label>
-              <textarea id="points-forts" name="points-forts" placeholder="Vos compétences clés" rows="3" required></textarea>
-            </div>
-            <div class="field">
-              <label for="points-faibles"><span class="asterisk">*</span> Points faibles</label>
-              <textarea id="points-faibles" name="points-faibles" placeholder="Axes d'amélioration" rows="3" required></textarea>
-            </div>
-          </div>
+                    {# Téléphone & Niveau d'étude #}
+                    <div class="row">
+                        <div class="field">
+                            <label for="id_phone">Téléphone</label>
+                            <input type="tel" name="phone" id="id_phone" placeholder="01 23 45 67 89" value="{{ form.phone.value|default:'' }}">
+                            {{ form.phone.errors }}
+                        </div>
+                        <div class="field">
+                            <label for="id_niveau_etude"><span class="asterisk">*</span> Niveau d'étude</label>
+                            <select name="niveau_etude" id="id_niveau_etude" required>
+                                {% for value, label in form.fields.niveau_etude.choices %}
+                                    <option value="{{ value }}" {% if form.niveau_etude.value == value %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                            {{ form.niveau_etude.errors }}
+                        </div>
+                    </div>
 
-          <button class="btn" type="submit">Continuer</button>
-        </form>
-      </div>
+                    {# Filière & Matricule #}
+                    <div class="row">
+                        <div class="field">
+                            <label for="id_filiere"><span class="asterisk">*</span> Filière</label>
+                            <input type="text" name="filiere" id="id_filiere" placeholder="Ex: Génie Logiciel" value="{{ form.filiere.value|default:'' }}" required>
+                            {{ form.filiere.errors }}
+                        </div>
+                        <div class="field">
+                            <label for="id_matricule">Matricule</label>
+                            <input type="text" name="matricule" id="id_matricule" placeholder="Optionnel" value="{{ form.matricule.value|default:'' }}">
+                            {{ form.matricule.errors }}
+                        </div>
+                    </div>
 
-      <!-- Colonne droite : visuel / inspiration -->
-      <div class="right">
-        <!-- Vous pouvez insérer une image ou une illustration ici -->
-        <img class="card-illus" src="https://placehold.co/420x300/e9f0ff/4f46e5?text=MentorLink" alt="Illustration MentorLink" />
-        <div class="tag">
-        
-        </div>
-      </div>
-    </section>
-  </div>
+                    {# Bio #}
+                    <div class="row">
+                        <div class="field full">
+                            <label for="id_bio">Bio</label>
+                            <textarea name="bio" id="id_bio" rows="3" placeholder="Parlez-nous de vous, de vos objectifs...">{{ form.bio.value|default:'' }}</textarea>
+                            {{ form.bio.errors }}
+                        </div>
+                    </div>
+
+                    {# Mot de passe & Confirmation #}
+                    <div class="row">
+                        <div class="field">
+                            <label for="id_password1"><span class="asterisk">*</span> Mot de passe</label>
+                            <input type="password" name="password1" id="id_password1" placeholder="Choisissez un mot de passe" required>
+                            {{ form.password1.errors }}
+                        </div>
+                        <div class="field">
+                            <label for="id_password2"><span class="asterisk">*</span> Confirmer le mot de passe</label>
+                            <input type="password" name="password2" id="id_password2" placeholder="Répétez le mot de passe" required>
+                            {{ form.password2.errors }}
+                        </div>
+                    </div>
+
+                    <button class="btn full" type="submit">S'inscrire</button>
+                </form>
+
+                <div class="footer-cta">
+                    Déjà un compte ? <a href="{% url 'connexion' %}">Connectez-vous</a>
+                </div>
+            </div>
+
+            <!-- Colonne droite : illustration -->
+            <div class="right">
+                <img class="card-illus" src="https://placehold.co/420x300/e9f0ff/4f46e5?text=IFRI+Mentor" alt="Illustration IFRI Mentor" />
+    
+            </div>
+        </section>
+    </div>
 </body>
 </html>

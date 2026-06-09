@@ -1,0 +1,347 @@
+{% extends "dashboard_base.html" %}
+{% load static %}
+
+{% block title %}Tableau de bord – IFRI Mentor{% endblock %}
+
+{% block content %}
+<style>
+    /* ==========================================================================
+       VARIABLES ET THÈME UNIQUE IFRI MENTOR
+       ========================================================================== */
+    :root {
+        --primary: #6366f1;
+        --primary-dark: #4f46e5;
+        --blue-soft: #eef2ff;
+        --text: #1e293b;
+        --text-light: #64748b;
+        --border: #e2e8f0;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+        --shadow-card: 0 4px 12px rgba(0,0,0,0.04);
+        --radius-lg: 16px;
+        --radius-xl: 20px;
+        --mentor-bg: #f8fafc;
+    }
+
+    body { background: #fff; color: var(--text); }
+
+    .dashboard-root {
+        padding-top: 70px;
+        min-height: 100vh;
+    }
+
+    /* ===== SWITCHER DE RÔLE (plus discret) ===== */
+    .role-switcher {
+        background: white;
+        border-bottom: 1px solid var(--border);
+        padding: 0.8rem 2rem;
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        position: sticky;
+        top: 70px;
+        z-index: 90;
+    }
+
+    .switch-btn {
+        padding: 0.5rem 2rem;
+        border-radius: 50px;
+        border: 1px solid var(--border);
+        background: white;
+        color: var(--text-light);
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .switch-btn.active {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+        box-shadow: 0 2px 8px rgba(99,102,241,0.2);
+    }
+
+    /* ===== SECTIONS ===== */
+    .section {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    /* --- MODE APPRENANT --- */
+    .hero-mini {
+        background: linear-gradient(135deg, #f0f4ff, #fff);
+        border-radius: var(--radius-xl);
+        padding: 3rem 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .hero-mini h1 {
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        font-weight: 800;
+        color: #1e1b4b;
+    }
+
+    .search-box {
+        max-width: 600px;
+        margin: 2rem auto 0;
+        display: flex;
+        gap: 0.5rem;
+        background: white;
+        border-radius: 50px;
+        padding: 0.5rem;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+        border: 1px solid var(--border);
+    }
+
+    .search-box input {
+        flex: 1;
+        border: none;
+        outline: none;
+        padding: 0.8rem 1.2rem;
+        font-size: 1rem;
+        font-family: inherit;
+    }
+
+    .search-box button {
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 0 2rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .search-box button:hover { background: var(--primary-dark); }
+
+    .mentor-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .mentor-card {
+        background: white;
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border);
+        padding: 1.5rem;
+        transition: transform 0.2s, box-shadow 0.2s;
+        display: flex;
+        flex-direction: column;
+    }
+    .mentor-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-card);
+    }
+
+    .mentor-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .mentor-avatar {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary), #818cf8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 800;
+        font-size: 1.4rem;
+    }
+
+    .mentor-info h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 0.1rem;
+    }
+
+    .mentor-info span {
+        font-size: 0.8rem;
+        color: var(--text-light);
+    }
+
+    .mentor-skills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin: 0.5rem 0;
+    }
+
+    .skill-tag {
+        background: #eef2ff;
+        color: var(--primary);
+        padding: 0.2rem 0.7rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .btn-contact {
+        margin-top: auto;
+        text-align: center;
+        background: transparent;
+        border: 1px solid var(--primary);
+        color: var(--primary);
+        border-radius: 8px;
+        padding: 0.5rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+    .btn-contact:hover {
+        background: var(--primary);
+        color: white;
+    }
+
+    /* --- MODE MENTOR --- */
+    .mentor-dashboard {
+        display: none;
+    }
+
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border);
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .stat-card h3 {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--primary);
+        margin-bottom: 0.25rem;
+    }
+
+    .session-item {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 1rem 1.5rem;
+        margin-bottom: 0.75rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: var(--text-light);
+    }
+
+    @media (max-width: 768px) {
+        .search-box { flex-direction: column; border-radius: 20px; }
+        .search-box button { width: 100%; }
+    }
+</style>
+
+<div class="dashboard-root">
+    <!-- SWITCHER -->
+   
+
+    <!-- ============ MODE APPRENANT ============ -->
+    <div id="mentee-mode" class="section">
+        <div class="hero-mini">
+            <h1>Trouvez votre pair idéal à l’IFRI</h1>
+            <p style="color: var(--text-light);">Entraide gratuite, 100% bénévole</p>
+            <form class="search-box" method="GET" action="{% url 'dash' %}">
+                <input type="text" name="q" placeholder="Rechercher une compétence...">
+                <button type="submit">Rechercher</button>
+            </form>
+        </div>
+
+        <h2 style="font-weight:800; margin-bottom:1rem;">{{ mentors_count }} mentors disponibles</h2>
+        <div class="mentor-grid">
+            {% for mentor in mentors %}
+                <div class="mentor-card">
+                    <div class="mentor-header">
+                        <div class="mentor-avatar">{{ mentor.user.first_name|slice:":1" }}{{ mentor.user.last_name|slice:":1" }}</div>
+                        <div class="mentor-info">
+                            <h3>{{ mentor.user.get_full_name|default:mentor.user.username }}</h3>
+                            <span>{{ mentor.niveau_etude }} · {{ mentor.filiere }}</span>
+                        </div>
+                    </div>
+                    <div class="mentor-skills">
+                        {% for ms in mentor.mentor_skills.all %}
+                            <span class="skill-tag">{{ ms.skill.name }}</span>
+                        {% empty %}
+                            <span class="skill-tag" style="background:#f1f5f9; color:#94a3b8;">Compétences à venir</span>
+                        {% endfor %}
+                    </div>
+                    <p style="color:var(--text-light); font-size:0.85rem; margin:0.5rem 0;">⭐ {{ mentor.average_rating }} · {{ mentor.total_sessions_as_mentor }} sessions</p>
+                    <a href="{% url 'conversation_start' mentor.user.id %}" class="btn-contact">Contacter</a>
+                </div>
+            {% empty %}
+                <div class="empty-state">Aucun mentor disponible pour le moment.</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- ============ MODE MENTOR ============ -->
+    {% if profile.is_mentor %}
+    <div id="mentor-mode" class="section mentor-dashboard">
+        <div class="stats-row">
+            <div class="stat-card">
+                <h3>{{ profile.total_sessions_as_mentor }}</h3>
+                <p>Sessions animées</p>
+            </div>
+            <div class="stat-card">
+                <h3>{{ profile.average_rating }}</h3>
+                <p>Note moyenne</p>
+            </div>
+            <div class="stat-card">
+                <h3>{{ upcoming_sessions.count }}</h3>
+                <p>Prochaines sessions</p>
+            </div>
+        </div>
+
+        <h2 style="font-weight:800; margin-bottom:1rem;">📅 Sessions à venir</h2>
+        {% for session in upcoming_sessions %}
+            <div class="session-item">
+                <div>
+                    <strong>{{ session.skill.name }}</strong> avec
+                    {% if session.mentor == profile %}
+                        {{ session.mentee.user.get_full_name }}
+                    {% else %}
+                        {{ session.mentor.user.get_full_name }}
+                    {% endif %}
+                    <br><small>{{ session.scheduled_at|date:"d/m/Y à H:i" }}</small>
+                </div>
+                <span style="padding:0.2rem 0.8rem; border-radius:50px; background:#eef2ff; color:var(--primary); font-size:0.75rem;">{{ session.get_status_display }}</span>
+            </div>
+        {% empty %}
+            <div class="empty-state">Aucune session programmée pour l’instant.</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    function showMode(mode) {
+        document.getElementById('mentee-mode').style.display = (mode === 'mentee') ? 'block' : 'none';
+        const mentorDiv = document.getElementById('mentor-mode');
+        if (mentorDiv) mentorDiv.style.display = (mode === 'mentor') ? 'block' : 'none';
+
+        document.querySelectorAll('.switch-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+    // Par défaut : mode apprenant
+</script>
+{% endblock %}
