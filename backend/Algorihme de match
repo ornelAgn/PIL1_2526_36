@@ -1,0 +1,33 @@
+def calculer_score_matching(mentore, mentor):
+    """
+    Calcule le score de compatibilité entre un mentoré et un mentor.
+    Les arguments sont des dictionnaires contenant les données des utilisateurs.
+    """
+    
+    matieres_en_commun = set(mentore['lacunes']).intersection(set(mentor['competences']))
+   
+    if not matieres_en_commun:
+        return 0 # Si aucune matière ne correspond, pas de matching possible
+   
+    score_matieres = 100 # Base si au moins une matière correspond
+   
+    
+    horaires_en_commun = set(mentore['disponibilites']).intersection(set(mentor['disponibilites']))
+    if len(mentore['disponibilites']) > 0:
+        score_horaires = (len(horaires_en_commun) / len(mentore['disponibilites'])) * 100
+    else:
+        score_horaires = 0
+       
+    
+    if mentore['filiere'] == mentor['filiere']:
+        score_filiere = 100
+    elif mentore['filiere'] in ['IA', 'IM'] and mentor['filiere'] in ['IA', 'IM']:
+        score_filiere = 60  # Exemple de proximité mathématique/IA
+    else:
+        score_filiere = 30
+       
+
+    
+    score_final = (score_matieres * 0.50) + (score_horaires * 0.30) + (score_filiere * 0.20)
+   
+    return round(score_final, 2)
