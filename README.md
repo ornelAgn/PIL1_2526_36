@@ -1,22 +1,50 @@
-# Projet-int-grateur-G36-
-RULES
+# IFRI MentorLink
 
- Cloner le projet
+Application web de mentorat académique pour les étudiants de l'IFRI.
 
-git clone  https://github.com/ornelAgn
+## Installation
 
-2️⃣ Entrer dans le dossier du projet
-cd Groupe 36
+```bash
+# 1. Cloner le dépôt
+git clone https://github.com/PIL1_2526_XX/IFRI_MentorLink.git
+cd IFRI_MentorLink
 
-3️⃣ Avant de commencer à travailler
-Toujours exécuter :
+# 2. Créer et activer l'environnement virtuel
+python -m venv venv
+source venv/bin/activate   # Linux/Mac
+venv\Scripts\activate      # Windows
 
-git pull
+# 3. Installer les dépendances
+pip install -r requirements.txt
 
-4️⃣ Après avoir fait une modification
-git add . git commit -m "Modification PartieX" git push
+# 4. Configurer la base de données PostgreSQL
+# Créer une base nommée mentorlink_db, puis :
+export DB_NAME=mentorlink_db
+export DB_USER=postgres
+export DB_PASSWORD=votre_mot_de_passe
 
-(Remplacer X par le numéro de votre partie)
+# 5. Appliquer les migrations
+python manage.py migrate
 
-🎯 Objectif
-Travailler de manière collaborative, organisée et professionnelle en utilisant GitHub comme outil de gestion du projet.
+# 6. Lancer le serveur
+python manage.py runserver
+```
+
+Ouvrir http://127.0.0.1:8000
+
+## Structure du projet
+
+```
+apps/accounts/   → Gestion des comptes et profils
+apps/matching/   → Algorithme de matching mentor/mentoré
+apps/messaging/  → Messagerie instantanée (WebSocket)
+database/        → schema.sql (livrable)
+report/          → rapport HTML (livrable)
+```
+
+## Algorithme de matching
+
+Le score de compatibilité est calculé selon trois critères :
+- **50%** — Compatibilité des matières (lacunes du mentoré ∩ compétences du mentor)
+- **30%** — Compatibilité horaire (créneaux communs / créneaux du mentoré)
+- **20%** — Proximité de filière (même filière = 100, IA↔IM = 60, autres = 30)
