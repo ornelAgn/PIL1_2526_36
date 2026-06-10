@@ -1,535 +1,666 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Rick Alderman · Mentor & Coach | Profile Card</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+{% extends 'dashboard_base.html' %}
+{% load static %}
 
-    body {
-      background: linear-gradient(145deg, #eef2ff 0%, #e0e7ff 100%);
-      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-    }
+{% block title %}Mon Profil - IFRI Mentor{% endblock %}
 
-    /* --- palette complète depuis :root --- */
+{% block content %}
+<style>
     :root {
-      --primary: #6366f1;
-      --primary-dark: #4f46e5;
-      --primary-light: #818cf8;
-      --secondary: #3b82f6;
-      --accent: #60a5fa;
-      --dark: #1e1b4b;
-      --darker: #0f172a;
-      --light: #f8fafc;
-      --white: #ffffff;
-      --gray: #64748b;
-      --gray-light: #e2e8f0;
-      --success: #22c55e;
-      --warning: #f59e0b;
+        --primary: #6366f1;
+        --primary-dark: #4f46e5;
+        --primary-light: #818cf8;
+        --primary-50: #eef2ff;
+        --secondary: #3b82f6;
+        --dark: #1e1b4b;
+        --darker: #0f172a;
+        --gray: #64748b;
+        --gray-light: #e2e8f0;
+        --gray-50: #f8fafc;
+        --white: #ffffff;
+        --radius: 12px;
+        --radius-lg: 16px;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+        --shadow: 0 4px 12px rgba(0,0,0,0.06);
+        --shadow-lg: 0 10px 40px rgba(0,0,0,0.08);
     }
 
-    /* Carte principale */
-    .mentor-card {
-      max-width: 620px;
-      width: 100%;
-      background: var(--white);
-      border-radius: 2rem;
-      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25), 0 2px 6px rgba(0, 0, 0, 0.02);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-      overflow: hidden;
-      border: 1px solid rgba(99, 102, 241, 0.12);
+    .profile-wrapper {
+        min-height: 100vh;
+        background: linear-gradient(180deg, #f0f4ff 0%, #f8fafc 300px);
+        padding-top: 60px;
     }
 
-    .mentor-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 30px 50px -15px rgba(79, 70, 229, 0.25);
+    .profile-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem 3rem;
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        gap: 2rem;
     }
 
-    /* HEADER */
-    .card-header {
-      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-      padding: 0.9rem 1.8rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .badge-top {
-      background: rgba(255,255,255,0.2);
-      backdrop-filter: blur(5px);
-      padding: 0.3rem 1rem;
-      border-radius: 40px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: white;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .verified-icon {
-      background: var(--success);
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      color: white;
-    }
-
-    /* CORPS */
-    .card-content {
-      padding: 1.5rem 1.8rem 1.8rem;
-    }
-
-    /* RANGÉE PHOTO + IDENTITÉ */
-    .profile-row {
-      display: flex;
-      gap: 1.2rem;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-bottom: 1.2rem;
-    }
-
-    .avatar-frame {
-      position: relative;
-    }
-
-    .profile-photo {
-      width: 88px;
-      height: 88px;
-      background: linear-gradient(145deg, #e2e8f0, #cbd5e1);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      border: 3px solid var(--white);
-      box-shadow: 0 12px 20px -10px rgba(0, 0, 0, 0.2);
-    }
-
-    .initials-avatar {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(120deg, var(--primary-light), var(--primary-dark));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.2rem;
-      font-weight: 600;
-      color: white;
-      text-transform: uppercase;
-    }
-
-    .status-dot {
-      position: absolute;
-      bottom: 5px;
-      right: 4px;
-      width: 15px;
-      height: 15px;
-      background: var(--success);
-      border-radius: 50%;
-      border: 2px solid white;
-    }
-
-    .identity {
-      flex: 1;
-    }
-
-    .name {
-      font-size: 1.7rem;
-      font-weight: 800;
-      color: var(--dark);
-      letter-spacing: -0.3px;
-      line-height: 1.2;
-      margin-bottom: 0.25rem;
-    }
-
-    .title {
-      font-size: 0.85rem;
-      font-weight: 500;
-      background: rgba(99, 102, 241, 0.1);
-      display: inline-block;
-      padding: 0.25rem 1rem;
-      border-radius: 40px;
-      color: var(--primary-dark);
-    }
-
-    /* BOUTONS APPEL */
-    .contact-actions {
-      display: flex;
-      gap: 1rem;
-      margin: 0.8rem 0 1.2rem 0;
-      flex-wrap: wrap;
-    }
-
-    .call-btn, .message-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--light);
-      border: 1px solid var(--gray-light);
-      padding: 0.5rem 1.2rem;
-      border-radius: 60px;
-      font-weight: 600;
-      font-size: 0.85rem;
-      color: var(--dark);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .call-btn:hover, .message-btn:hover {
-      background: var(--primary);
-      border-color: var(--primary);
-      color: white;
-      transform: scale(0.97);
-      box-shadow: 0 8px 16px -8px rgba(99, 102, 241, 0.4);
-    }
-
-    /* ----- SECTION INFORMATIONS EN COLONNES (sans cadre superflu : suppression des .col-item borders mais on garde une mise en forme épurée) 
-         On enlève les cadres (border, background) pour un look plus aéré. On garde juste une fine séparation et de l'espace */
-    .info-columns {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.2rem;
-      margin: 1.2rem 0 1rem;
-    }
-
-    /* SUPPRESSION DU CADRE : plus de background, plus de border, plus de padding interne lourd */
-    .info-item {
-      padding: 0.25rem 0;
-      border-bottom: 1px dashed rgba(100, 116, 139, 0.2);
-    }
-    /* Version clean sans boîtes : on applique un style épuré */
-    .clean-field {
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-    }
-
-    .field-label {
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--gray);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .field-value {
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: var(--darker);
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* badges et styles */
-    .mentor-skill {
-      background: var(--primary-light);
-      color: white;
-      padding: 0.2rem 0.8rem;
-      border-radius: 30px;
-      font-size: 0.75rem;
-      font-weight: 500;
-    }
-
-    .availability-badge {
-      background: var(--success);
-      color: white;
-      padding: 0.2rem 0.8rem;
-      border-radius: 60px;
-      font-weight: 600;
-      font-size: 0.8rem;
-    }
-
-    .follow-request {
-      background: var(--accent);
-      color: white;
-      padding: 0.3rem 1rem;
-      border-radius: 40px;
-      font-weight: 600;
-      font-size: 0.75rem;
-      cursor: pointer;
-      transition: 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .follow-request:hover {
-      background: var(--primary-dark);
-      transform: scale(0.96);
-    }
-
-    .score-badge {
-      background: var(--warning);
-      padding: 0.2rem 0.7rem;
-      border-radius: 60px;
-      font-weight: 800;
-      font-size: 0.9rem;
-      color: #2c2c2c;
-    }
-
-    .license-code {
-      font-family: monospace;
-      background: var(--primary);
-      color: white;
-      padding: 0.2rem 0.6rem;
-      border-radius: 30px;
-      font-size: 0.75rem;
-      cursor: pointer;
-    }
-
-    .year-chip {
-      background: var(--secondary);
-      color: white;
-      padding: 0.2rem 0.7rem;
-      border-radius: 30px;
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
-
-    /* Pied de carte */
-    .footer-note {
-      margin-top: 1.2rem;
-      text-align: center;
-      font-size: 0.65rem;
-      color: var(--gray);
-      border-top: 1px solid var(--gray-light);
-      padding-top: 0.9rem;
-    }
-
-    /* Responsive */
-    @media (max-width: 550px) {
-      body {
-        padding: 1rem;
-      }
-      .card-content {
-        padding: 1rem;
-      }
-      .profile-row {
+    /* ════════════════════ COLONNE GAUCHE ════════════════════ */
+    .profile-sidebar {
+        display: flex;
         flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    /* ─── Carte Profil ─── */
+    .profile-card {
+        background: white;
+        border-radius: var(--radius-lg);
+        padding: 2rem 1.5rem;
         text-align: center;
-      }
-      .contact-actions {
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(226, 232, 240, 0.6);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .profile-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 80px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        opacity: 0.08;
+    }
+
+    .profile-avatar-large {
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        display: flex;
+        align-items: center;
         justify-content: center;
-      }
-      .info-columns {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
-      .name {
-        font-size: 1.5rem;
-      }
+        font-weight: 800;
+        font-size: 2.2rem;
+        margin: 0 auto 1rem;
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+        position: relative;
+        z-index: 1;
+        border: 4px solid white;
     }
 
-    @keyframes fadeSlide {
-      from {
-        opacity: 0;
-        transform: translateY(12px);
-      }
-      to {
-        opacity: 1;
+    .profile-card h3 {
+        margin: 0;
+        color: var(--dark);
+        font-size: 1.15rem;
+        font-weight: 700;
+        letter-spacing: -0.3px;
+    }
+
+    .profile-card .username {
+        color: var(--gray);
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+        font-weight: 500;
+    }
+
+    .profile-card .tagline {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        margin-top: 0.6rem;
+        padding: 0.35rem 0.9rem;
+        background: var(--primary-50);
+        color: var(--primary-dark);
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .profile-card .tagline svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    /* ─── Bio ─── */
+    .bio-text {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--gray-light);
+        color: var(--gray);
+        font-size: 0.85rem;
+        line-height: 1.6;
+        font-style: italic;
+    }
+
+    .bio-text:empty::before {
+        content: 'Aucune bio renseignée.';
+        opacity: 0.5;
+    }
+
+    /* ─── Stats ─── */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+        margin-top: 1.25rem;
+    }
+
+    .stat-pill {
+        background: var(--gray-50);
+        border-radius: 12px;
+        padding: 0.9rem 0.5rem;
+        text-align: center;
+        transition: all 0.2s;
+    }
+
+    .stat-pill:hover {
+        background: var(--primary-50);
+        transform: translateY(-2px);
+    }
+
+    .stat-pill .stat-value {
+        display: block;
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: var(--primary);
+        line-height: 1;
+    }
+
+    .stat-pill .stat-label {
+        display: block;
+        font-size: 0.7rem;
+        color: var(--gray);
+        margin-top: 0.3rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* ─── Rôles ─── */
+    .roles-card {
+        background: white;
+        border-radius: var(--radius-lg);
+        padding: 1.25rem 1.5rem;
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(226, 232, 240, 0.6);
+    }
+
+    .roles-card h4 {
+        margin: 0 0 0.75rem 0;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--dark);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+    }
+
+    .role-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.6rem 0.8rem;
+        border-radius: 10px;
+        margin-bottom: 0.5rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+
+    .role-badge:last-child { margin-bottom: 0; }
+
+    .role-badge.active {
+        background: linear-gradient(135deg, #dcfce7, #f0fdf4);
+        color: #166534;
+        border: 1px solid #bbf7d0;
+    }
+
+    .role-badge.inactive {
+        background: var(--gray-50);
+        color: var(--gray);
+        border: 1px solid var(--gray-light);
+        opacity: 0.6;
+    }
+
+    .role-badge .role-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+    }
+
+    .role-badge.active .role-icon { background: #22c55e; color: white; }
+    .role-badge.inactive .role-icon { background: var(--gray-light); color: var(--gray); }
+
+    .role-badge .role-status {
+        margin-left: auto;
+        font-size: 0.7rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 50px;
+        font-weight: 700;
+    }
+
+    .role-badge.active .role-status { background: #22c55e; color: white; }
+    .role-badge.inactive .role-status { background: var(--gray-light); color: var(--gray); }
+
+    /* ════════════════════ COLONNE DROITE ════════════════════ */
+    .profile-main {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    .edit-card {
+        background: white;
+        border-radius: var(--radius-lg);
+        padding: 2rem 2.5rem;
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(226, 232, 240, 0.6);
+    }
+
+    .edit-card-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1.75rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--gray-light);
+    }
+
+    .edit-card-header .header-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.1rem;
+    }
+
+    .edit-card-header h2 {
+        margin: 0;
+        color: var(--dark);
+        font-weight: 800;
+        font-size: 1.2rem;
+        letter-spacing: -0.3px;
+    }
+
+    .edit-card-header span {
+        color: var(--gray);
+        font-size: 0.8rem;
+        font-weight: 500;
+        margin-left: auto;
+    }
+
+    /* ─── Formulaire ─── */
+    .form-group {
+        margin-bottom: 1.4rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--dark);
+        font-size: 0.85rem;
+        letter-spacing: -0.2px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1.5px solid var(--gray-light);
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 0.95rem;
+        color: var(--dark);
+        transition: all 0.2s;
+        box-sizing: border-box;
+        background: var(--gray-50);
+    }
+
+    .form-control:hover {
+        border-color: #c7d2fe;
+        background: white;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+        background: white;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+        line-height: 1.6;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+    }
+
+    .form-hint {
+        font-size: 0.75rem;
+        color: var(--gray);
+        margin-top: 0.3rem;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    /* ─── Checkbox personnalisée ─── */
+    .roles-form-section {
+        background: linear-gradient(135deg, #f8fafc, #f0f4ff);
+        border-radius: 12px;
+        padding: 1.5rem;
+        border: 1.5px solid #e0e7ff;
+        margin: 1.5rem 0;
+    }
+
+    .roles-form-section h4 {
+        margin: 0 0 1rem 0;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--dark);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .roles-form-section h4::before {
+        content: '🎯';
+    }
+
+    .custom-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.9rem 1rem;
+        background: white;
+        border-radius: 10px;
+        border: 1.5px solid var(--gray-light);
+        margin-bottom: 0.75rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .custom-checkbox:hover {
+        border-color: var(--primary-light);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .custom-checkbox input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        accent-color: var(--primary);
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+
+    .custom-checkbox .checkbox-label {
+        font-size: 0.9rem;
+        color: var(--dark);
+        font-weight: 500;
+        margin: 0;
+        cursor: pointer;
+        flex: 1;
+    }
+
+    .custom-checkbox .checkbox-label strong {
+        color: var(--primary-dark);
+    }
+
+    .custom-checkbox .checkbox-desc {
+        font-size: 0.75rem;
+        color: var(--gray);
+        margin-top: 0.15rem;
+    }
+
+    /* ─── Bouton ─── */
+    .btn-save {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        border: none;
+        padding: 0.9rem 2rem;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 25px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-save:active {
         transform: translateY(0);
-      }
     }
 
-    .mentor-card {
-      animation: fadeSlide 0.4s ease-out;
+    .btn-save svg {
+        width: 18px;
+        height: 18px;
     }
-  </style>
-</head>
-<body>
-  <div class="mentor-card">
-    <div class="card-header">
-      <div class="badge-top">
-        <span>🏆</span> MENTOR & COACH · Real Estate Excellence
-      </div>
-      <div class="verified-icon">✓</div>
-    </div>
 
-    <div class="card-content">
-      <!-- Photo + identité -->
-      <div class="profile-row">
-        <div class="avatar-frame">
-          <div class="profile-photo">
-            <div class="initials-avatar">
-              <span>🧠</span>
+    /* ─── Messages ─── */
+    .alert {
+        padding: 1rem 1.25rem;
+        border-radius: 10px;
+        margin-bottom: 1.25rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    .alert-success {
+        background: #f0fdf4;
+        color: #166534;
+        border: 1.5px solid #bbf7d0;
+    }
+
+    /* ════════════════════ RESPONSIVE ════════════════════ */
+    @media (max-width: 900px) {
+        .profile-container {
+            grid-template-columns: 1fr;
+            padding: 1.5rem 1rem 2rem;
+        }
+
+        .profile-sidebar {
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .profile-card { flex: 1; min-width: 280px; }
+        .roles-card { flex: 1; min-width: 200px; }
+        .edit-card { padding: 1.5rem; }
+    }
+
+    @media (max-width: 600px) {
+        .form-row { grid-template-columns: 1fr; }
+        .stats-grid { grid-template-columns: repeat(3, 1fr); }
+        .profile-sidebar { flex-direction: column; }
+    }
+</style>
+
+<div class="profile-wrapper">
+    <div class="profile-container">
+
+        <!-- ═══════ COLONNE GAUCHE ═══════ -->
+        <aside class="profile-sidebar">
+
+            <!-- Carte Profil -->
+            <div class="profile-card">
+                <div class="profile-avatar-large">
+                    {{ request.user.first_name|slice:":1"|upper|default:request.user.username|slice:":1"|upper }}
+                </div>
+                <h3>{{ request.user.get_full_name|default:request.user.username }}</h3>
+                <p class="username">@{{ request.user.username }}</p>
+
+                <div class="tagline">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.499 5.221 69.494 69.494 0 00-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
+                    </svg>
+                    {{ profile.get_niveau_etude_display }} · {{ profile.filiere|default:"Filière non renseignée" }}
+                </div>
+
+                <div class="bio-text">
+                    {{ profile.bio|default:"" }}
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-pill">
+                        <span class="stat-value">⭐ {{ profile.average_rating|default:"0.0" }}</span>
+                        <span class="stat-label">Note</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="stat-value">{{ profile.total_sessions_as_mentor }}</span>
+                        <span class="stat-label">Mentorat</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="stat-value">{{ profile.total_sessions_as_mentee }}</span>
+                        <span class="stat-label">Apprenti</span>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="status-dot"></div>
-        </div>
-        <div class="identity">
-          <div class="name">Rick Alderman</div>
-          <div class="title">Realtor • Mentor & Coach | Keyes Real Estate</div>
-        </div>
-      </div>
 
-      <!-- Boutons d'appel -->
-      <div class="contact-actions">
-        <div class="call-btn" id="callBtn">
-          <span>📞</span> Call Rick
-        </div>
-        <div class="message-btn" id="messageBtn">
-          <span>✉️</span> Message
-        </div>
-      </div>
+            <!-- Carte Rôles -->
+            <div class="roles-card">
+                <h4>Mes Rôles</h4>
 
-      <!-- SECTION INFORMATIONS SANS CADRE (colonnes, suppression des transactions et des cadres lourds) -->
-      <div class="info-columns">
-        <!-- 1. Compétences mentorat (remplacement complet) -->
-        <div class="clean-field">
-          <div class="field-label">
-            <span>🎓</span> Compétences Mentorat
-          </div>
-          <div class="field-value">
-            <span class="mentor-skill">Leadership immobilier</span>
-            <span class="mentor-skill">Stratégie de carrière</span>
-            <span class="mentor-skill">Négociation avancée</span>
-            <span class="mentor-skill">Développement personnel</span>
-            <span class="mentor-skill">Préparation examen DRE</span>
-          </div>
-        </div>
+                <div class="role-badge {% if profile.is_mentee %}active{% else %}inactive{% endif %}">
+                    <div class="role-icon">🎓</div>
+                    <div>
+                        <div style="font-weight:700;">Apprenant</div>
+                        <div style="font-size:0.75rem; opacity:0.8;">Je cherche de l'aide</div>
+                    </div>
+                    <span class="role-status">{% if profile.is_mentee %}Actif{% else %}Inactif{% endif %}</span>
+                </div>
 
-        <!-- 2. Disponibilité -->
-        <div class="clean-field">
-          <div class="field-label">
-            <span>⏰</span> Disponibilité
-          </div>
-          <div class="field-value">
-            <span class="availability-badge">✔️ Immédiate</span>
-            <span style="font-size:0.75rem;">Lun-Sam · 9h-19h (sessions mentorat)</span>
-          </div>
-        </div>
+                <div class="role-badge {% if profile.is_mentor %}active{% else %}inactive{% endif %}">
+                    <div class="role-icon">🧑‍🏫</div>
+                    <div>
+                        <div style="font-weight:700;">Mentor</div>
+                        <div style="font-size:0.75rem; opacity:0.8;">Je propose mon aide</div>
+                    </div>
+                    <span class="role-status">{% if profile.is_mentor %}Actif{% else %}Inactif{% endif %}</span>
+                </div>
+            </div>
+        </aside>
 
-        <!-- 3. Demande de suivis -->
-        <div class="clean-field">
-          <div class="field-label">
-            <span>📌</span> Demande de suivis
-          </div>
-          <div class="field-value">
-            <span class="follow-request" id="followRequestBtn">
-              📢 + Suivre ce profil (coaching & conseils)
-            </span>
-            <span style="font-size:0.7rem; color:#4b5563;">webinaires, astuces, mentorat</span>
-          </div>
-        </div>
+        <!-- ═══════ COLONNE DROITE ═══════ -->
+        <main class="profile-main">
+            <div class="edit-card">
+                <div class="edit-card-header">
+                    <div class="header-icon">✏️</div>
+                    <h2>Modifier mes informations</h2>
+                    <span>Mettez à jour votre profil IFRI Mentor</span>
+                </div>
 
-        <!-- 4. Performance Score (on garde car indicateur qualité) -->
-        <div class="clean-field">
-          <div class="field-label">
-            <span>⭐</span> Performance Score
-          </div>
-          <div class="field-value">
-            <span class="score-badge">93</span> / 100 · Satisfaction mentoré
-          </div>
-        </div>
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-success">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
 
-        <!-- 5. CA DRE# (licence) -->
-        <div class="clean-field">
-          <div class="field-label">
-            <span>📜</span> CA DRE#
-          </div>
-          <div class="field-value">
-            <span class="license-code" id="dreLicense">02223329</span>
-          </div>
-        </div>
+                <form method="POST">
+                    {% csrf_token %}
 
-        <!-- 6. Licensed / Expérience mentorale -->
-        <div class="clean-field">
-          <div class="field-label">
-            <span>📅</span> Licence & Mentorat depuis
-          </div>
-          <div class="field-value">
-            <span class="year-chip">2011</span> <span style="font-size:0.75rem;">+13 ans d'expertise & accompagnement</span>
-          </div>
-        </div>
-      </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="{{ u_form.first_name.id_for_label }}">Prénom</label>
+                            {{ u_form.first_name }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ u_form.last_name.id_for_label }}">Nom de famille</label>
+                            {{ u_form.last_name }}
+                        </div>
+                    </div>
 
-      <!-- note de bas de carte (sans transaction, orientation mentorat) -->
-      <div class="footer-note">
-        🧠 Mentor certifié · Accompagnement personnalisé · Suivi de carrière · Sessions 1:1 et ateliers collectifs
-      </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="{{ u_form.email.id_for_label }}">Adresse Email</label>
+                            {{ u_form.email }}
+                            <div class="form-hint">📧 Cet email sera utilisé pour les notifications</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ p_form.phone.id_for_label }}">Téléphone</label>
+                            {{ p_form.phone }}
+                            <div class="form-hint">📱 Optionnel, pour les contacts rapides</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="{{ p_form.niveau_etude.id_for_label }}">Niveau d'étude (IFRI)</label>
+                            {{ p_form.niveau_etude }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ p_form.filiere.id_for_label }}">Filière</label>
+                            {{ p_form.filiere }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ p_form.bio.id_for_label }}">À propos de moi (Bio)</label>
+                        {{ p_form.bio }}
+                        <div class="form-hint">📝 Décrivez-vous en quelques lignes pour aider les autres à vous connaître</div>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+    <label for="{{ p_form.format_preference.id_for_label }}">Préférence de format pour les sessions</label>
+    {{ p_form.format_preference }}
+    <div class="form-hint">💻 Indiquez si vous préférez travailler en présentiel à l'IFRI ou à distance</div>
+</div>
+
+                    <div class="roles-form-section">
+                        <h4>Mes Rôles sur IFRI Mentor</h4>
+
+                        <label class="custom-checkbox">
+                            {{ p_form.is_mentee }}
+                            <div class="checkbox-label">
+                                <strong>Apprenant</strong>
+                                <div class="checkbox-desc">Je souhaite recevoir de l'aide de mentors</div>
+                            </div>
+                        </label>
+
+                        <label class="custom-checkbox">
+                            {{ p_form.is_mentor }}
+                            <div class="checkbox-label">
+                                <strong>Mentor</strong>
+                                <div class="checkbox-desc">Je souhaite aider d'autres étudiants dans mes domaines d'expertise</div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-save">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                        </svg>
+                        Enregistrer les modifications
+                    </button>
+                </form>
+            </div>
+        </main>
     </div>
-  </div>
-
-  <script>
-    // Boutons d'appel et message
-    const callBtn = document.getElementById('callBtn');
-    const msgBtn = document.getElementById('messageBtn');
-    const dreSpan = document.getElementById('dreLicense');
-    const followBtn = document.getElementById('followRequestBtn');
-
-    if (callBtn) {
-      callBtn.addEventListener('click', () => {
-        alert("📞 Contacter Rick Alderman (Mentor/Coach)\n+1 (213) 555-MENTOR\nDisponible pour session découverte.");
-      });
-    }
-
-    if (msgBtn) {
-      msgBtn.addEventListener('click', () => {
-        alert("✉️ Envoyer un message à Rick Alderman\nrick.mentor@keyesre.com\nDemande de suivi ou programme de mentorat.");
-      });
-    }
-
-    // Copie licence
-    if (dreSpan) {
-      dreSpan.style.cursor = 'pointer';
-      dreSpan.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const license = "02223329";
-        navigator.clipboard.writeText(license).then(() => {
-          const toast = document.createElement('div');
-          toast.innerText = `✅ DRE #${license} copié`;
-          toast.style.position = 'fixed';
-          toast.style.bottom = '20px';
-          toast.style.left = '50%';
-          toast.style.transform = 'translateX(-50%)';
-          toast.style.backgroundColor = '#1e1b4b';
-          toast.style.color = 'white';
-          toast.style.padding = '6px 18px';
-          toast.style.borderRadius = '40px';
-          toast.style.fontSize = '0.75rem';
-          toast.style.fontWeight = '500';
-          toast.style.zIndex = '1000';
-          toast.style.backdropFilter = 'blur(8px)';
-          toast.style.pointerEvents = 'none';
-          document.body.appendChild(toast);
-          setTimeout(() => toast.remove(), 1500);
-        }).catch(() => alert("02223329"));
-      });
-    }
-
-    // Interaction "Demande de suivis" (version mentorat)
-    if (followBtn) {
-      followBtn.addEventListener('click', () => {
-        alert("✅ Demande de suivi mentorat envoyée !\nVous recevrez des conseils, supports et invitations aux sessions de coaching.");
-        followBtn.style.backgroundColor = "var(--primary-dark)";
-        followBtn.innerText = "✓ Suivi mentorat activé";
-        followBtn.style.cursor = "default";
-        setTimeout(() => {
-          followBtn.innerText = "📢 + Suivre ce profil (coaching & conseils)";
-          followBtn.style.backgroundColor = "var(--accent)";
-        }, 3000);
-      });
-    }
-  </script>
-</body>
-</html>
+</div>
+{% endblock %}

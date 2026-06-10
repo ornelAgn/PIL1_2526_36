@@ -254,13 +254,14 @@
             <ol>
                 <li>Créez une base de données nommée <code>ifri_mentorlink</code> dans votre SGBD.</li>
                 <li>Importez le fichier de structure fourni à la racine :
-                    <pre>python manage.py runserver (dans le backend)</pre>
+                    <pre>mysql -u root -p projet_db < ../database/schema.sql
+</pre>
                 </li>
             </ol>
 
             <h3>Étape 4 : Lancer le serveur</h3>
             <p>Exécutez la commande suivante pour lancer l'application backend :</p>
-            <pre> python app.py ou python -m flask run</pre>
+            <pre> python manage.py runserver (dans le backend)</pre>
             <p>L'application sera accessible dans votre navigateur à l'adresse : <code>http://127.0.0.1:5000</code></p>
         </section>
 

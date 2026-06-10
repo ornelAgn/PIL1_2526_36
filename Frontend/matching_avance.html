@@ -1,0 +1,719 @@
+{% extends "dashboard_base.html" %}
+{% load static %}
+
+{% block title %}Matching Avancé – IFRI Mentor{% endblock %}
+
+{% block content %}
+<style>
+    :root {
+        --primary: #6366f1;
+        --primary-dark: #4f46e5;
+        --primary-light: #818cf8;
+        --primary-50: #eef2ff;
+        --primary-100: #e0e7ff;
+        --text: #1e293b;
+        --text-light: #64748b;
+        --text-muted: #94a3b8;
+        --border: #e2e8f0;
+        --border-light: #f1f5f9;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+        --shadow: 0 4px 12px rgba(0,0,0,0.06);
+        --shadow-lg: 0 10px 40px rgba(0,0,0,0.08);
+        --shadow-glow: 0 0 40px rgba(99,102,241,0.12);
+        --radius: 12px;
+        --radius-lg: 16px;
+        --radius-xl: 20px;
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse-ring {
+        0% { transform: scale(0.8); opacity: 1; }
+        100% { transform: scale(1.4); opacity: 0; }
+    }
+
+    @keyframes scoreReveal {
+        0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+        60% { transform: scale(1.1) rotate(10deg); }
+        100% { transform: scale(1) rotate(0); opacity: 1; }
+    }
+
+    @keyframes slideInLeft {
+        from { opacity: 0; transform: translateX(-30px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+    }
+
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-6px); }
+    }
+
+    .matching-root {
+        padding-top: 60px;
+        min-height: 100vh;
+        background: linear-gradient(180deg, #f0f4ff 0%, #f8fafc 400px);
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    /* ═══════ HEADER ═══════ */
+    .matching-header {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem 1.5rem;
+        text-align: center;
+    }
+
+    .matching-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 1rem;
+        background: linear-gradient(135deg, var(--primary-50), #f0fdf4);
+        color: var(--primary-dark);
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        border: 1px solid #c7d2fe;
+        animation: fadeInUp 0.5s ease-out;
+    }
+
+    .matching-badge .pulse-dot {
+        width: 8px;
+        height: 8px;
+        background: #22c55e;
+        border-radius: 50%;
+        position: relative;
+    }
+
+    .matching-badge .pulse-dot::after {
+        content: '';
+        position: absolute;
+        inset: -3px;
+        border-radius: 50%;
+        border: 2px solid #22c55e;
+        animation: pulse-ring 1.5s ease-out infinite;
+    }
+
+    .matching-header h1 {
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        font-weight: 800;
+        color: #1e1b4b;
+        margin: 0 0 0.5rem;
+        letter-spacing: -1px;
+        animation: fadeInUp 0.5s ease-out 0.1s both;
+    }
+
+    .matching-header p {
+        color: var(--text-light);
+        font-size: 1.05rem;
+        max-width: 600px;
+        margin: 0 auto;
+        animation: fadeInUp 0.5s ease-out 0.2s both;
+    }
+
+    /* ═══════ FILTRES / INFO BAR ═══════ */
+    .info-bar {
+        max-width: 1100px;
+        margin: 0 auto 1.5rem;
+        padding: 0 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        animation: fadeInUp 0.5s ease-out 0.3s both;
+    }
+
+    .info-bar .result-count {
+        font-size: 0.9rem;
+        color: var(--text-light);
+        font-weight: 500;
+    }
+
+    .info-bar .result-count strong {
+        color: var(--primary);
+        font-size: 1.2rem;
+    }
+
+    .info-bar .filter-tags {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .filter-tag {
+        padding: 0.35rem 0.9rem;
+        background: white;
+        border: 1.5px solid var(--border);
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text-light);
+        transition: all 0.2s;
+    }
+
+    .filter-tag:hover {
+        border-color: var(--primary-light);
+        color: var(--primary);
+    }
+
+    /* ═══════ GRID DES RÉSULTATS ═══════ */
+    .matching-grid {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 1.5rem 3rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 1.25rem;
+    }
+
+    /* ═══════ CARTE MATCHING ═══════ */
+    .match-card {
+        background: white;
+        border-radius: var(--radius-lg);
+        border: 1.5px solid var(--border-light);
+        padding: 1.75rem;
+        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        animation: fadeInUp 0.5s ease-out both;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .match-card:nth-child(1) { animation-delay: 0.1s; }
+    .match-card:nth-child(2) { animation-delay: 0.15s; }
+    .match-card:nth-child(3) { animation-delay: 0.2s; }
+    .match-card:nth-child(4) { animation-delay: 0.25s; }
+    .match-card:nth-child(5) { animation-delay: 0.3s; }
+    .match-card:nth-child(6) { animation-delay: 0.35s; }
+
+    .match-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary), #a78bfa, var(--primary));
+        background-size: 200% 100%;
+        opacity: 0;
+        transition: opacity 0.3s;
+        animation: shimmer 3s linear infinite;
+    }
+
+    .match-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg), var(--shadow-glow);
+        border-color: transparent;
+    }
+
+    .match-card:hover::before { opacity: 1; }
+
+    /* ─── Score Badge ─── */
+    .score-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 1.1rem;
+        color: white;
+        animation: scoreReveal 0.6s ease-out both;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+
+    .score-badge .score-label {
+        font-size: 0.6rem;
+        font-weight: 600;
+        opacity: 0.9;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .score-excellent { background: linear-gradient(135deg, #22c55e, #16a34a); }
+    .score-good { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+    .score-moderate { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .score-low { background: linear-gradient(135deg, #94a3b8, #64748b); }
+
+    /* ─── Header Mentor ─── */
+    .match-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+        padding-right: 70px;
+    }
+
+    .match-avatar {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary), #818cf8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 800;
+        font-size: 1.3rem;
+        flex-shrink: 0;
+        transition: transform 0.3s;
+        box-shadow: 0 4px 12px rgba(99,102,241,0.25);
+    }
+
+    .match-card:hover .match-avatar {
+        transform: scale(1.08) rotate(-3deg);
+    }
+
+    .match-info { min-width: 0; }
+
+    .match-info h3 {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--text);
+        margin: 0 0 0.2rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .match-info .meta {
+        font-size: 0.8rem;
+        color: var(--text-light);
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        flex-wrap: wrap;
+    }
+
+    .match-info .meta .dot {
+        width: 4px;
+        height: 4px;
+        background: var(--text-muted);
+        border-radius: 50%;
+    }
+
+    /* ─── Compatibilité détaillée ─── */
+    .compat-details {
+        background: linear-gradient(135deg, #f8fafc, var(--primary-50));
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .compat-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.6rem;
+        font-size: 0.82rem;
+    }
+
+    .compat-row:last-child { margin-bottom: 0; }
+
+    .compat-label {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: var(--text-light);
+        font-weight: 500;
+    }
+
+    .compat-bar {
+        width: 100px;
+        height: 6px;
+        background: var(--border);
+        border-radius: 3px;
+        overflow: hidden;
+        margin: 0 0.5rem;
+    }
+
+    .compat-fill {
+        height: 100%;
+        border-radius: 3px;
+        transition: width 0.8s ease-out;
+        background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    }
+
+    .compat-value {
+        font-weight: 700;
+        color: var(--primary-dark);
+        min-width: 32px;
+        text-align: right;
+    }
+
+    /* ─── Compétences communes ─── */
+    .common-skills {
+        margin-bottom: 1rem;
+    }
+
+    .common-skills h4 {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--text-light);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin: 0 0 0.5rem;
+    }
+
+    .skills-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+    }
+
+    .skill-pill {
+        padding: 0.3rem 0.7rem;
+        background: linear-gradient(135deg, var(--primary-50), white);
+        color: var(--primary-dark);
+        border-radius: 50px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        border: 1px solid #c7d2fe;
+        transition: all 0.2s;
+    }
+
+    .skill-pill:hover {
+        background: var(--primary);
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    .skill-pill.empty {
+        background: var(--border-light);
+        color: var(--text-muted);
+        border-color: var(--border);
+    }
+
+    /* ─── Disponibilités ─── */
+    .common-dispo {
+        margin-bottom: 1rem;
+    }
+
+    .common-dispo h4 {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--text-light);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin: 0 0 0.5rem;
+    }
+
+    .dispo-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+    }
+
+    .dispo-tag {
+        padding: 0.25rem 0.6rem;
+        background: #f0fdf4;
+        color: #166534;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        border: 1px solid #bbf7d0;
+    }
+
+    .dispo-tag.empty {
+        background: var(--border-light);
+        color: var(--text-muted);
+        border-color: var(--border);
+    }
+
+    /* ─── Stats rapides ─── */
+    .match-quick-stats {
+        display: flex;
+        gap: 1rem;
+        padding: 0.75rem 0;
+        border-top: 1px solid var(--border-light);
+        border-bottom: 1px solid var(--border-light);
+        margin-bottom: 1rem;
+    }
+
+    .quick-stat {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.82rem;
+        color: var(--text-light);
+    }
+
+    .quick-stat .star { color: #fbbf24; }
+
+    /* ─── Bouton Contact ─── */
+    .btn-match-contact {
+        margin-top: auto;
+        text-align: center;
+        background: transparent;
+        border: 1.5px solid var(--primary);
+        color: var(--primary);
+        border-radius: 10px;
+        padding: 0.65rem;
+        font-weight: 700;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-match-contact::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        transform: translateX(-100%);
+        transition: transform 0.3s;
+    }
+
+    .btn-match-contact span { position: relative; z-index: 1; }
+
+    .btn-match-contact:hover {
+        color: white;
+        border-color: transparent;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(99,102,241,0.25);
+    }
+
+    .btn-match-contact:hover::before { transform: translateX(0); }
+
+    /* ═══════ EMPTY STATE ═══════ */
+    .matching-empty {
+        text-align: center;
+        padding: 4rem 2rem;
+        max-width: 500px;
+        margin: 0 auto;
+        animation: fadeInUp 0.5s ease-out;
+    }
+
+    .matching-empty .empty-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        display: inline-block;
+        animation: float 4s ease-in-out infinite;
+    }
+
+    .matching-empty h3 {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 0.5rem;
+    }
+
+    .matching-empty p {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-update-profile {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        padding: 0.8rem 1.8rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 0.9rem;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(99,102,241,0.3);
+    }
+
+    .btn-update-profile:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 25px rgba(99,102,241,0.4);
+    }
+
+    /* ═══════ RESPONSIVE ═══════ */
+    @media (max-width: 768px) {
+        .matching-grid { grid-template-columns: 1fr; padding: 0 1rem 2rem; }
+        .matching-header { padding: 1.5rem 1rem 1rem; }
+        .info-bar { flex-direction: column; align-items: flex-start; }
+        .match-card { padding: 1.25rem; }
+    }
+</style>
+
+<div class="matching-root">
+    <div class="matching-header">
+        <div class="matching-badge">
+            <span class="pulse-dot"></span>
+            Algorithme de matching intelligent
+        </div>
+        <h1>Trouvez votre mentor idéal</h1>
+        <p>
+            Notre algorithme analyse vos compétences, disponibilités et parcours
+            pour vous proposer les mentors les plus compatibles.
+        </p>
+    </div>
+
+    <div class="info-bar">
+        <div class="result-count">
+            <strong>{{ total_mentors }}</strong> mentor{{ total_mentors|pluralize:"s" }} recommandé{{ total_mentors|pluralize:"s" }} pour vous
+        </div>
+        <div class="filter-tags">
+            <span class="filter-tag">🎯 Compétences (40%)</span>
+            <span class="filter-tag">📅 Disponibilités (30%)</span>
+            <span class="filter-tag">🎓 Académique (20%)</span>
+            <span class="filter-tag">⭐ Expérience (10%)</span>
+        </div>
+    </div>
+
+    {% if resultats %}
+    <div class="matching-grid">
+        {% for mentor, matching in resultats %}
+        <div class="match-card">
+            {% if matching.score_total >= 75 %}
+                <div class="score-badge score-excellent" style="animation-delay: {{ forloop.counter }}00ms;">
+                    <span>{{ matching.score_total|floatformat:0 }}%</span>
+                    <span class="score-label">Match</span>
+                </div>
+            {% elif matching.score_total >= 50 %}
+                <div class="score-badge score-good" style="animation-delay: {{ forloop.counter }}00ms;">
+                    <span>{{ matching.score_total|floatformat:0 }}%</span>
+                    <span class="score-label">Match</span>
+                </div>
+            {% elif matching.score_total >= 30 %}
+                <div class="score-badge score-moderate" style="animation-delay: {{ forloop.counter }}00ms;">
+                    <span>{{ matching.score_total|floatformat:0 }}%</span>
+                    <span class="score-label">Match</span>
+                </div>
+            {% else %}
+                <div class="score-badge score-low" style="animation-delay: {{ forloop.counter }}00ms;">
+                    <span>{{ matching.score_total|floatformat:0 }}%</span>
+                    <span class="score-label">Match</span>
+                </div>
+            {% endif %}
+
+            <div class="match-header">
+                <div class="match-avatar">
+                    {{ mentor.user.first_name|slice:":1" }}{{ mentor.user.last_name|slice:":1" }}
+                </div>
+                <div class="match-info">
+                    <h3>{{ mentor.user.get_full_name|default:mentor.user.username }}</h3>
+                    <div class="meta">
+                        {{ mentor.get_niveau_etude_display|default:mentor.niveau_etude }}
+                        <span class="dot"></span>
+                        {{ mentor.filiere }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="compat-details">
+                <div class="compat-row">
+                    <span class="compat-label">🎯 Compétences</span>
+                    <div class="compat-bar">
+                        <div class="compat-fill" style="width: {{ matching.details.skills.score }}%;"></div>
+                    </div>
+                    <span class="compat-value">{{ matching.details.skills.score|floatformat:0 }}%</span>
+                </div>
+                <div class="compat-row">
+                    <span class="compat-label">📅 Horaires</span>
+                    <div class="compat-bar">
+                        <div class="compat-fill" style="width: {{ matching.details.availability.score }}%;"></div>
+                    </div>
+                    <span class="compat-value">{{ matching.details.availability.score|floatformat:0 }}%</span>
+                </div>
+                <div class="compat-row">
+                    <span class="compat-label">🎓 Filière/Niveau</span>
+                    <div class="compat-bar">
+                        <div class="compat-fill" style="width: {{ matching.details.academic.score }}%;"></div>
+                    </div>
+                    <span class="compat-value">{{ matching.details.academic.score|floatformat:0 }}%</span>
+                </div>
+                <div class="compat-row">
+                    <span class="compat-label">⭐ Expérience</span>
+                    <div class="compat-bar">
+                        <div class="compat-fill" style="width: {{ matching.details.experience.score }}%;"></div>
+                    </div>
+                    <span class="compat-value">{{ matching.details.experience.score|floatformat:0 }}%</span>
+                </div>
+            </div>
+
+            {% if matching.common_skills %}
+            <div class="common-skills">
+                <h4>Compétences en commun</h4>
+                <div class="skills-list">
+                    {% for skill in matching.common_skills|slice:":4" %}
+                        <span class="skill-pill">{{ skill }}</span>
+                    {% endfor %}
+                    {% if matching.common_skills|length > 4 %}
+                        <span class="skill-pill empty">+{{ matching.common_skills|length|add:"-4" }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if matching.common_dispos %}
+            <div class="common-dispo">
+                <h4>Disponibilités communes</h4>
+                <div class="dispo-tags">
+                    {% for dispo in matching.common_dispos|slice:":3" %}
+                        <span class="dispo-tag">{{ dispo }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="match-quick-stats">
+                <div class="quick-stat">
+                    <span class="star">⭐</span>
+                    <span>{{ mentor.average_rating|default:"0.0" }}</span>
+                </div>
+                <div class="quick-stat">
+                    <span>🎯</span>
+                    <span>{{ mentor.total_sessions_as_mentor }} session{{ mentor.total_sessions_as_mentor|pluralize:"s" }}</span>
+                </div>
+            </div>
+
+            <a href="{% url 'conversation_start' mentor.user.id %}" class="btn-match-contact">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span>Contacter</span>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="matching-empty">
+        <div class="empty-icon">🔍</div>
+        <h3>Aucun mentor trouvé</h3>
+        <p>
+            Complétez votre profil avec vos compétences recherchées et vos disponibilités
+            pour obtenir des recommandations personnalisées.
+        </p>
+        <a href="{% url 'profil' %}" class="btn-update-profile">
+            ✏️ Compléter mon profil
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

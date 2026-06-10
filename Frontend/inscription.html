@@ -239,6 +239,20 @@
                         </div>
                     </div>
 
+                    {# Prénom & Nom (champs ajoutés) #}
+                    <div class="row">
+                        <div class="field">
+                            <label for="id_first_name"><span class="asterisk">*</span> Prénom</label>
+                            <input type="text" name="first_name" id="id_first_name" placeholder="Votre prénom" value="{{ form.first_name.value|default:'' }}" required>
+                            {{ form.first_name.errors }}
+                        </div>
+                        <div class="field">
+                            <label for="id_last_name"><span class="asterisk">*</span> Nom</label>
+                            <input type="text" name="last_name" id="id_last_name" placeholder="Votre nom" value="{{ form.last_name.value|default:'' }}" required>
+                            {{ form.last_name.errors }}
+                        </div>
+                    </div>
+
                     {# Téléphone & Niveau d'étude #}
                     <div class="row">
                         <div class="field">
@@ -305,7 +319,6 @@
             <!-- Colonne droite : illustration -->
             <div class="right">
                 <img class="card-illus" src="https://placehold.co/420x300/e9f0ff/4f46e5?text=IFRI+Mentor" alt="Illustration IFRI Mentor" />
-    
             </div>
         </section>
     </div>

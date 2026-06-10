@@ -1,0 +1,47 @@
+{% extends 'dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Messagerie - IFRI Mentor{% endblock %}
+
+{% block content %}
+<style>
+    .messaging-container { max-width: 800px; margin: 2rem auto; padding: 0 1.5rem; padding-top: 80px;}
+    .conv-card { background: white; border: 1px solid var(--gray-light); border-radius: var(--radius); padding: 1.2rem 1.5rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; transition: box-shadow 0.2s, border-color 0.2s; text-decoration: none; color: inherit; }
+    .conv-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-color: var(--primary); }
+    .conv-info { display: flex; align-items: center; gap: 1rem; }
+    .conv-avatar { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; }
+    .conv-details h4 { margin: 0 0 0.3rem 0; color: var(--dark); font-size: 1.05rem;}
+    .conv-details p { margin: 0; color: var(--gray); font-size: 0.85rem; }
+    .badge-msg { background: var(--blue-soft, #eef2ff); color: var(--primary); padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; }
+    .empty-msg { text-align: center; padding: 4rem 2rem; color: var(--gray); background: white; border-radius: var(--radius); border: 1px dashed var(--gray-light); }
+</style>
+
+<div class="messaging-container">
+    <h2 style="font-weight: 800; color: var(--dark); margin-bottom: 1.5rem;">Vos conversations</h2>
+    
+    {% if conversations %}
+        {% for conversation in conversations %}
+            {% for member in conversation.members.all %}
+                {% if member.user != request.user %}
+                <a href="{% url 'conversation_detail' conversation.id %}" class="conv-card">
+                    <div class="conv-info">
+                        <div class="conv-avatar">{{ member.user.username|slice:":1"|upper }}</div>
+                        <div class="conv-details">
+                            <h4>{{ member.user.get_full_name|default:member.user.username }}</h4>
+                            <p>Dernière activité : {{ conversation.updated_at|date:"d/m/Y à H:i" }}</p>
+                        </div>
+                    </div>
+                    <span class="badge-msg">{{ conversation.messages.count }} messages</span>
+                </a>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    {% else %}
+        <div class="empty-msg">
+            <h3 style="color: var(--dark); margin-bottom: 0.5rem;">Aucun message</h3>
+            <p>Allez sur le tableau de bord pour trouver un mentor et démarrer une discussion !</p>
+            <a href="{% url 'dash' %}" style="display: inline-block; margin-top: 1rem; color: var(--primary); font-weight: 600; text-decoration: none;">Voir les mentors →</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

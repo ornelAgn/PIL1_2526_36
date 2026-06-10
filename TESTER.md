@@ -117,6 +117,8 @@ pip install django
 
 pip show django
 pip install pymysql
+
+python -m pip install Pillow
 ```bash
 
 Assurez-vous que votre base MySQL existe et que les identifiants dans settings.py sont corrects :

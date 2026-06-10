@@ -28,130 +28,130 @@
         }
 
        .dashboard-navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 60px;                  /* un peu plus fin */
-    background: #ffffff;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 1.5rem;
-    z-index: 1000;
-    border-bottom: 1px solid #e2e8f0;
-}
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            z-index: 1000;
+            border-bottom: 1px solid #e2e8f0;
+        }
 
-.dashboard-nav-left {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-}
+        .dashboard-nav-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
 
-.dashboard-logo {
-    font-weight: 700;
-    font-size: 1.25rem;
-    color: #1e1b4b;
-    text-decoration: none;
-    white-space: nowrap;
-    letter-spacing: -0.3px;
-}
+        .dashboard-logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: #1e1b4b;
+            text-decoration: none;
+            white-space: nowrap;
+            letter-spacing: -0.3px;
+        }
 
-.dashboard-nav-links {
-    display: flex;
-    gap: 1.5rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
+        .dashboard-nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
 
-.dashboard-nav-links li a {
-    text-decoration: none;
-    color: #64748b;
-    font-weight: 500;
-    font-size: 0.9rem;
-    padding: 0.4rem 0;
-    position: relative;
-    transition: color 0.2s;
-    white-space: nowrap;
-}
+        .dashboard-nav-links li a {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0.4rem 0;
+            position: relative;
+            transition: color 0.2s;
+            white-space: nowrap;
+        }
 
-.dashboard-nav-links li a:hover,
-.dashboard-nav-links li a.active {
-    color: #6366f1;
-}
+        .dashboard-nav-links li a:hover,
+        .dashboard-nav-links li a.active {
+            color: #6366f1;
+        }
 
-/* Ligne active discrète */
-.dashboard-nav-links li a.active::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: #6366f1;
-    border-radius: 2px;
-}
-.dashboard-nav-right {
-    display: flex;
-    align-items: center;
-    gap: 5.5rem;
-    margin-right: 0.5rem;   /* réduit le décalage vers le bord */
-}
+        /* Ligne active discrète */
+        .dashboard-nav-links li a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #6366f1;
+            border-radius: 2px;
+        }
+        
+        .dashboard-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 5.5rem;
+            margin-right: 0.5rem;
+        }
 
-.logout-link {
-    color: #64748b;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.85rem;
-    transition: color 0.2s;
-    white-space: nowrap;
-}
-.logout-link:hover {
-    color: #ef4444;
-}
+        .logout-link {
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+            white-space: nowrap;
+        }
+        .logout-link:hover {
+            color: #ef4444;
+        }
 
-.dashboard-profile-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    text-decoration: none;
-    color: #1e1b4b;
-    font-weight: 600;
-    font-size: 0.9rem;
-    white-space: nowrap;
-}
+        .dashboard-profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: #1e1b4b;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
 
-.avatar-circle {
-    width: 30px;
-    height: 30px;
-    background: linear-gradient(135deg, #6366f1, #3b82f6);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 700;
-    font-size: 0.8rem;
-}
+        .avatar-circle {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #6366f1, #3b82f6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
 
-.profile-name {
-    max-width: 120px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+        .profile-name {
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
 
-/* Responsive – masque les liens texte en dessous de 900px, affiche une icône burger (à implémenter plus tard) */
-@media (max-width: 900px) {
-    .dashboard-nav-links {
-        display: none;
-    }
-    .dashboard-nav-left {
-        gap: 1rem;
-    }
-}
+        @media (max-width: 900px) {
+            .dashboard-nav-links {
+                display: none;
+            }
+            .dashboard-nav-left {
+                gap: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -161,6 +161,14 @@
         <ul class="dashboard-nav-links">
             {% with current_url=request.resolver_match.url_name %}
             <li><a href="{% url 'dash' %}" class="{% if current_url == 'dash' %}active{% endif %}">Tableau de bord</a></li>
+            
+            <li><a href="{% url 'offres_demandes' %}" class="{% if current_url == 'offres_demandes' %}active{% endif %}">Offres & Demandes</a></li>
+            <li>
+    <a href="{% url 'matching_avance' %}" 
+       class="{% if current_url == 'matching_avance' %}active{% endif %}">
+        🔍 Matching
+    </a>
+</li>
             <li><a href="{% url 'messagerie' %}" class="{% if current_url == 'messagerie' or current_url == 'conversation_detail' %}active{% endif %}">Messagerie</a></li>
             <li><a href="{% url 'profil' %}" class="{% if current_url == 'profil' %}active{% endif %}">Profil</a></li>
             {% endwith %}
@@ -169,8 +177,8 @@
 
     <div class="dashboard-nav-right">
         <a href="{% url 'deconnexion' %}" class="logout-link">Déconnexion</a>
-        <a href="#" class="dashboard-profile-btn">
-        </a>
+        <a href="{% url 'profil' %}" class="dashboard-profile-btn">
+            </a>
     </div>
 </nav>
 
