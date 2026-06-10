@@ -1,0 +1,50 @@
+from flask import Flask, jsonify, request
+# Importez votre fonction de calcul définie précédemment
+# from matching import calculer_score_matching
+
+app = Flask(__name__)
+
+@app.route('/api/matching/<int:user_id>', methods=['GET'])
+def obtenir_matching(user_id):
+    # 1. Simulation de la récupération du profil du mentoré connecté (depuis la BDD SQL)
+    # En vrai, vous ferez un "SELECT * FROM Utilisateurs WHERE id = user_id"
+    mentore = {
+        "id": user_id,
+        "filiere": "GL",
+        "lacunes": ["Algorithmique", "SQL"],
+        "disponibilites": ["Lundi_Soir", "Mercredi_Aprem"]
+    }
+   
+    # 2. Simulation de la récupération de TOUS les mentors de la base de données
+    # En vrai : "SELECT * FROM Utilisateurs WHERE role = 'Mentor'"
+    tous_les_mentors = [
+        {
+            "id": 10, "nom": "Abalo", "prenom": "Jean", "filiere": "GL",
+            "competences": ["Algorithmique", "Python"], "disponibilites": ["Lundi_Soir"]
+        },
+        {
+            "id": 11, "nom": "Sessi", "prenom": "Marie", "filiere": "IA",
+            "competences": ["SQL", "Algorithmique"], "disponibilites": ["Lundi_Soir", "Mercredi_Aprem"]
+        }
+    ]
+   
+    resultats_matching = []
+   
+    # 3. On fait tourner l'algorithme sur chaque mentor
+    for mentor in tous_les_mentors:
+        score = calculer_score_matching(mentore, mentor) # Notre fonction de calcul
+       
+        if score > 0: # On ne garde que ceux qui ont un intérêt
+            resultats_matching.append({
+                "mentor_id": mentor["id"],
+                "nom": mentor["nom"],
+                "prenom": mentor["prenom"],
+                "filiere": mentor["filiere"],
+                "score_compatibilite": score
+            })
+           
+    # 4. Tri des résultats du plus grand score au plus petit
+    resultats_matching = sorted(resultats_matching, key=lambda x: x['score_compatibilite'], reverse=True)
+   
+    # 5. On renvoie la liste triée au format JSON pour le Frontend
+    return jsonify(resultats_matching)
