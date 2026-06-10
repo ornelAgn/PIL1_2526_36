@@ -145,10 +145,14 @@ Depuis le dossier `backend/` :
 ```bash
 mysql -u root -p projet_db < ../database/schema.sql
 ```
+C:\Users\SYKO Electronics\OneDrive\Music\Desktop\GROUPE 36\PIL_2526_36\database
 
 > Note : Les modèles Django couvrent déjà les tables principales, cette étape n’est normalement pas nécessaire.
 
 ### 7. Lancer le serveur de développement
+
+python manage.py migrate
+
 
 Toujours dans `backend/`, exécutez :
 

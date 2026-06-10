@@ -162,7 +162,7 @@
             {% with current_url=request.resolver_match.url_name %}
             <li><a href="{% url 'dash' %}" class="{% if current_url == 'dash' %}active{% endif %}">Tableau de bord</a></li>
             <li><a href="{% url 'messagerie' %}" class="{% if current_url == 'messagerie' or current_url == 'conversation_detail' %}active{% endif %}">Messagerie</a></li>
-            <li><a href="{% url 'badges' %}" class="{% if current_url == 'badges' %}active{% endif %}">Badges</a></li>
+            <li><a href="{% url 'profil' %}" class="{% if current_url == 'profil' %}active{% endif %}">Profil</a></li>
             {% endwith %}
         </ul>
     </div>

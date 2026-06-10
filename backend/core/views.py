@@ -10,6 +10,8 @@ from .forms import InscriptionForm, ConnexionForm
 from .models import Profile, MentorshipSession, Conversation, ConversationMember, Message,Badge, UserBadge
 from django.db.models import Q
 from django.utils import timezone
+from django.contrib.auth.forms import AuthenticationForm
+
 
 
 def accueil(request):
@@ -30,23 +32,18 @@ def inscription(request):
     return render(request, 'inscription.html', {'form': form})
 
 def connexion(request):
-    """Vue de connexion : authentifie l'utilisateur."""
     if request.method == 'POST':
-        form = ConnexionForm(request, data=request.POST)
+        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                messages.info(request, f"Bienvenue, {username} !")
-                return redirect('dash')
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, f"Bienvenue, {user.username} !")
+            return redirect('dash')
         else:
             messages.error(request, "Nom d'utilisateur ou mot de passe invalide.")
     else:
-        form = ConnexionForm()
+        form = AuthenticationForm()
     return render(request, 'connexion.html', {'form': form})
-
 def deconnexion(request):
     """Déconnecte l'utilisateur et retourne à l'accueil."""
     logout(request)
