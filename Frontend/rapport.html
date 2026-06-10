@@ -6,7 +6,7 @@
     <title>Rapport de Projet - IFRI_MentorLink</title>
     <style>
         :root {
-            --primary-color: #1e3a8a; /* Bleu institutionnel */
+            --primary-color: #1e3a8a;
             --secondary-color: #3b82f6;
             --text-color: #1f2937;
             --bg-color: #fafbf9;
@@ -97,21 +97,21 @@
     </header>
 
     <div class="container">
-        <!-- Table des matières pour faciliter la navigation des profs -->
         <nav>
             <ul>
                 <li><a href="#identification">1. Identification du Groupe</a></li>
                 <li><a href="#organisation">2. Organisation Interne & Démarche</a></li>
                 <li><a href="#conception">3. Description de la Conception</a></li>
                 <li><a href="#deploiement">4. Instructions de Déploiement</a></li>
-                <li><a href="#manuel">5. Manuel d'Utilisation</a></li>
+                <li><a href="#dependances">5. Dépendances Logicielles</a></li>
+                <li><a href="#manuel">6. Manuel d'Utilisation</a></li>
             </ul>
         </nav>
 
         <!-- 1. IDENTIFICATION DU GROUPE -->
         <section id="identification">
             <h2>1. Identification du Groupe</h2>
-            <p><strong>Nom du Groupe :</strong> GROUPE 36 
+            <p><strong>Nom du Groupe :</strong> GROUPE 36</p>
             <p><strong>Dépôt GitHub :</strong> <code>PIL1_2526_36</code></p>
            
             <h3>Membres de l'équipe</h3>
@@ -125,37 +125,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Ornel AGONGLO</td>
-                        <td>IA</td>
-                        <td>Licence 1</td>
-                        <td>ornel02009@gmail.com</td>
-                    </tr>
-                      <tr>
-                      <td>Melvine Agossi ADJALLALA </td>
-                        <td>SI</td>
-                        <td>Licence 1</td>
-                        <td>adjallamelvine10@gmail.com</td>
-                    </tr>
-                      <tr>
-                      <td>Claire Nelly AGBIDI </td>
-                        <td>GL</td>
-                        <td>Licence 1</td>
-                        <td>claireagbidi@gmail.com</td>
-                    </tr>
-                     <tr>
-                      <td>Espoir Jelielle DOSSOGBE</td>
-                        <td>SI</td>
-                        <td>Licence 1</td>
-                        <td>dossogbeespoir@gmail.com</td>
-                    </tr>
-                     <tr>
-                      <td>Mia Roxy GBAGUIDI</td>
-                        <td>GL</td>
-                        <td>Licence 1</td>
-                        <td>miagbaguidi@gmail.com</td>
-                    </tr>
-                    
+                    <tr><td>Ornel AGONGLO</td><td>IA</td><td>Licence 1</td><td>ornel02009@gmail.com</td></tr>
+                    <tr><td>Melvine Agossi ADJALLALA</td><td>SI</td><td>Licence 1</td><td>adjallamelvine10@gmail.com</td></tr>
+                    <tr><td>Claire Nelly AGBIDI</td><td>GL</td><td>Licence 1</td><td>claireagbidi@gmail.com</td></tr>
+                    <tr><td>Espoir Jelielle DOSSOGBE</td><td>SI</td><td>Licence 1</td><td>dossogbeespoir@gmail.com</td></tr>
+                    <tr><td>Mia Roxy GBAGUIDI</td><td>GL</td><td>Licence 1</td><td>miagbaguidi@gmail.com</td></tr>
                 </tbody>
             </table>
         </section>
@@ -165,7 +139,7 @@
             <h2>2. Organisation Interne & Démarche</h2>
             <h3>Mode de fonctionnement du groupe</h3>
             <p>
-                <em>Le travail s'est principalement fait en ligne grace à des discussions via google meet et selon les répartitions suivantes: </em>
+                Le travail s'est principalement fait en ligne grâce à des discussions via Google Meet et selon les répartitions suivantes :
             </p>
 
             <h3>Répartition des rôles et contributions</h3>
@@ -174,116 +148,179 @@
                     <tr>
                         <th>Membre</th>
                         <th>Rôle principal</th>
-                        <th>Contributions exactes (Détails des tâches)</th>
+                        <th>Contributions exactes</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>Ornel AGONGLO</td>
                         <td>Développeur Backend & Algorithme de matching</td>
-                        <td>Conception de l'algorithme de matching en Python.</td>
+                        <td>Conception de l'algorithme de matching en Python, développement des vues Django et logique métier.</td>
                     </tr>
                     <tr>
                         <td>Melvine ADJALLALA</td>
                         <td>Développeur frontend</td>
-                        <td>Création des interfaces HTML/CSS (Bootstrap) pour l'inscription, la connexion et la page de profil.</td>
+                        <td>Création des interfaces HTML/CSS pour l'inscription, la connexion et la page de profil.</td>
                     </tr>
                     <tr>
-                        <td>Mia Roxy GBAGUIDI </td>
-                        <td> Développeur Frontend</td>
-                        <td>Création des interfaces HTML/CSS (Bootstrap) pour l'inscription, la connexion et la page de profil.</td>
+                        <td>Mia Roxy GBAGUIDI</td>
+                        <td>Développeur Frontend</td>
+                        <td>Création des interfaces HTML/CSS pour le tableau de bord, le matching et la messagerie.</td>
                     </tr>
                     <tr>
                         <td>Espoir Jelielle DOSSOGBE</td>
-                        <td>Développeur de la base des données</td>
-                        <td>Ecriture des requetes SQL pour la messagerie instantanée</td>
+                        <td>Développeur de la base de données</td>
+                        <td>Écriture des requêtes SQL pour la messagerie instantanée et la structure de la base.</td>
                     </tr>
                     <tr>
-                        <td>Claire Nelly</td>
-                        <td> Developpeur de la base des données</td>
-                        <td>Conception de la base des données à travers l'élaboration des modèles MLD etMCD</td>.</td>
+                        <td>Claire Nelly AGBIDI</td>
+                        <td>Développeur de la base de données</td>
+                        <td>Conception de la base de données via l'élaboration des modèles MCD et MLD, création du schéma SQL.</td>
                     </tr>
-                    
                 </tbody>
             </table>
 
             <h3>Démarche de développement et outils de collaboration</h3>
             <ul>
-                <li><strong>Gestion de version :</strong> Utilisation impérative de Git et GitHub avec une stratégie des branches afin d'éviter tout retard conflictuel.</li>
-                <li><strong>Planification :</strong> Répartition des modules pour respecter le délai très strict de 10 jours.</li>
+                <li><strong>Gestion de version :</strong> Utilisation de Git et GitHub avec une stratégie de branches pour éviter les conflits.</li>
+                <li><strong>Planification :</strong> Répartition des modules pour respecter le délai de 10 jours.</li>
             </ul>
         </section>
 
-        
+        <!-- 3. DESCRIPTION DE LA CONCEPTION -->
         <section id="conception">
             <h2>3. Description de la Conception</h2>
             <h3>Architecture Logicielle</h3>
             <p>L'application adopte une architecture <strong>Client-Serveur</strong> modulaire :</p>
             <ul>
-                <li><strong>Frontend :</strong> Technologies de base HTML, CSS, JavaScript .</li>
-                <li><strong>Backend :</strong> Développé en Python avec le framework (Flask).</li>
+                <li><strong>Frontend :</strong> HTML, CSS, JavaScript (templates Django).</li>
+                <li><strong>Backend :</strong> Développé en Python avec le framework <strong>Django</strong> (version 6.0.6).</li>
             </ul>
 
             <h3>Conception de la Base de Données (Modèle Relationnel)</h3>
             <p>
-                La base de données relationnelle a été implémentée sous MySQL. Les mots de passe y sont stockés de manière sécurisée grâce à une fonction de hachage.
+                La base de données relationnelle a été implémentée sous MySQL. Les mots de passe sont stockés de manière sécurisée grâce au hachage intégré de Django.
             </p>
-            <p><em>[Optionnel mais recommandé : Insérez ici la description textuelle de vos tables principales : Utilisateurs, Offres_Demandes, Messages, Horaires...]</em></p>
+            <p>
+                Les principales tables incluent : <code>Profile</code>, <code>Skill</code>, <code>MentorSkill</code>, <code>MenteeSkill</code>, <code>Conversation</code>, <code>ConversationMember</code>, <code>Message</code>, <code>MentorshipSession</code>, <code>Review</code>, <code>Badge</code>, <code>UserBadge</code>.
+            </p>
         </section>
 
-        
+        <!-- 4. INSTRUCTIONS DE DÉPLOIEMENT -->
         <section id="deploiement">
             <h2>4. Instructions de Déploiement</h2>
-            <p>Suivez ces étapes pour installer et exécuter l'application localement sur votre machine :</p>
-           
             <h3>Prérequis</h3>
             <ul>
-                <li>Python 3.11.9 installé</li>
-                <li>SGBD MySQL configuré et actif </li>
+                <li>Python 3.11 ou supérieur installé (testé avec 3.14.2)</li>
+                <li>SGBD MySQL configuré et actif</li>
                 <li>Git installé</li>
-                <li>Création d'un dépot GitHub</li>
+                <li>Un environnement virtuel Python recommandé (<code>venv</code>)</li>
             </ul>
 
             <h3>Étape 1 : Cloner le projet</h3>
-            <pre>git clone https://github.com/.ornelAgn/PIL_2526_36.git cd PIL1_2526_36</pre>
+            <pre>git clone https://github.com/ornelAgn/PIL_2526_36.git
+cd PIL_2526_36</pre>
 
-            <h3>Étape 2 : Installer les dépendances Python</h3>
+            <h3>Étape 2 : Créer et activer un environnement virtuel</h3>
+            <pre>python -m venv venv
+# Windows
+venv\Scripts\activate
+# Linux / macOS
+source venv/bin/activate</pre>
+
+            <h3>Étape 3 : Installer les dépendances Python</h3>
             <pre>pip install -r requirements.txt</pre>
+            <p>Le fichier <code>requirements.txt</code> contient notamment :</p>
+            <ul>
+                <li>Django==6.0.6</li>
+                <li>mysqlclient==2.2.0 (ou PyMySQL==1.2.0 selon configuration)</li>
+                <li>django-crispy-forms (si utilisé)</li>
+                <li>autres paquets mineurs (Pillow, etc.)</li>
+            </ul>
 
-            <h3>Étape 3 : Configurer la Base de Données</h3>
+            <h3>Étape 4 : Configurer la Base de Données</h3>
             <ol>
-                <li>Créez une base de données nommée <code>ifri_mentorlink</code> dans votre SGBD.</li>
-                <li>Importez le fichier de structure fourni à la racine :
-                    <pre>mysql -u root -p projet_db < ../database/schema.sql
-</pre>
+                <li>Créez une base de données nommée <code>projet_db</code> dans MySQL.</li>
+                <li>Importez la structure fournie :
+                    <pre>mysql -u root -p projet_db < database/schema.sql</pre>
                 </li>
+                <li>Adaptez les paramètres de connexion dans <code>backend/backend/settings.py</code> (USER, PASSWORD, etc.).</li>
             </ol>
 
-            <h3>Étape 4 : Lancer le serveur</h3>
-            <p>Exécutez la commande suivante pour lancer l'application backend :</p>
-            <pre> python manage.py runserver (dans le backend)</pre>
-            <p>L'application sera accessible dans votre navigateur à l'adresse : <code>http://127.0.0.1:5000</code></p>
+            <h3>Étape 5 : Appliquer les migrations Django</h3>
+            <pre>cd backend
+python manage.py migrate</pre>
+
+            <h3>Étape 6 : Lancer le serveur de développement</h3>
+            <pre>python manage.py runserver</pre>
+            <p>L'application sera accessible sur <code>http://127.0.0.1:8000</code>.</p>
         </section>
 
-        <!-- 5. MANUEL D'UTILISATION -->
+        <!-- 5. DÉPENDANCES LOGICIELLES (nouvelle section) -->
+        <section id="dependances">
+            <h2>5. Dépendances Logicielles Détaillées</h2>
+            <p>Voici la liste complète des dépendances nécessaires au bon fonctionnement du projet :</p>
+            <h3>5.1 Environnement d’exécution</h3>
+            <table>
+                <tr><th>Composant</th><th>Version</th></tr>
+                <tr><td>Python</td><td>3.11.9 ou supérieur (3.14.2 testé)</td></tr>
+                <tr><td>pip</td><td>dernière version stable</td></tr>
+                <tr><td>MySQL</td><td>8.0.46</td></tr>
+                <tr><td>Système d’exploitation</td><td>Windows 10/11, Linux, macOS</td></tr>
+            </table>
+
+            <h3>5.2 Packages Python principaux</h3>
+            <table>
+                <thead><tr><th>Package</th><th>Version</th><th>Rôle</th></tr></thead>
+                <tbody>
+                    <tr><td>Django</td><td>6.0.6</td><td>Framework web backend</td></tr>
+                    <tr><td>mysqlclient</td><td>2.2.0</td><td>Connecteur MySQL pour Django (recommandé)</td></tr>
+                    <tr><td>PyMySQL</td><td>1.2.0</td><td>Alternative légère au connecteur MySQL</td></tr>
+                    <tr><td>Pillow</td><td>10.0.0</td><td>Traitement d’images (avatars)</td></tr>
+                    <tr><td>django-crispy-forms</td><td>2.0</td><td>Amélioration du rendu des formulaires</td></tr>
+                    <tr><td>asgiref</td><td>3.8.1</td><td>Support ASGI (dépendance Django)</td></tr>
+                    <tr><td>sqlparse</td><td>0.4.4</td><td>Formatage SQL (dépendance Django)</td></tr>
+                    <tr><td>tzdata</td><td>2024.1</td><td>Base de données des fuseaux horaires</td></tr>
+                </tbody>
+            </table>
+
+            <h3>5.3 Contenu typique du fichier <code>requirements.txt</code></h3>
+            <pre>
+Django==6.0.6
+mysqlclient==2.2.0
+Pillow==10.0.0
+django-crispy-forms==2.0
+asgiref==3.8.1
+sqlparse==0.4.4
+tzdata==2024.1
+            </pre>
+            <p>Note : si vous utilisez <strong>PyMySQL</strong> au lieu de <strong>mysqlclient</strong>, ajoutez <code>pymysql==1.2.0</code> et incluez dans le code l’appel <code>pymysql.install_as_MySQLdb()</code>.</p>
+        </section>
+
+        <!-- 6. MANUEL D'UTILISATION -->
         <section id="manuel">
-            <h2>5. Manuel d'Utilisation</h2>
+            <h2>6. Manuel d'Utilisation</h2>
             <h3>1. Gestion de compte</h3>
             <ul>
-                <li><strong>Inscription :</strong> Allez sur la page d'inscription, remplissez vos informations de base (Nom, Prénom, Email, Téléphone, etc.), puis définissez vos lacunes et vos lacunes points forts.</li>
-                <li><strong>Connexion :</strong> Utilisez votre email ou numéro de téléphone unique et votre mot de passe pour accéder à votre espace.</li>
+                <li><strong>Inscription :</strong> Remplissez le formulaire avec vos informations personnelles et académiques, puis validez.</li>
+                <li><strong>Connexion :</strong> Utilisez votre nom d’utilisateur et votre mot de passe pour accéder à votre espace.</li>
             </ul>
 
-            <h3>2. Fonctionnalité de Mentorat & Matching</h3>
+            <h3>2. Tableau de bord et recherche de mentors</h3>
             <ul>
-                <li><strong>Publier une offre/demande :</strong> Remplissez le formulaire en spécifiant la matière concernée, vos disponibilités et le format (En ligne / Présentiel).</li>
-                <li><strong>Voir les suggestions (Matching) :</strong> Cliquez sur l'onglet "Mes suggestions de matching". L'algorithme calculera automatiquement les profils les plus compatibles en fonction de vos compétences communes, horaires partagés et filières d'études.</li>
+                <li>Après connexion, le tableau de bord affiche les mentors disponibles et vos sessions à venir.</li>
+                <li>Utilisez la barre de recherche pour trouver un mentor par compétence, filière ou nom.</li>
             </ul>
 
-            <h3>3. Messagerie instantanée</h3>
+            <h3>3. Matching intelligent</h3>
             <ul>
-                <li>Ouvrez l'onglet "Messagerie" pour voir la liste de vos conversations en cours.</li>
-                <li>Sélectionnez un profil "matché" pour lui envoyer un message en temps réel.</li>
+                <li>La page « Matching » classe les mentors selon un score de compatibilité basé sur vos compétences recherchées, vos disponibilités, votre filière et l’expérience du mentor.</li>
+            </ul>
+
+            <h3>4. Messagerie instantanée</h3>
+            <ul>
+                <li>Accédez à la messagerie pour voir vos conversations.</li>
+                <li>Ouvrez une conversation pour envoyer et recevoir des messages en temps réel.</li>
             </ul>
         </section>
     </div>
