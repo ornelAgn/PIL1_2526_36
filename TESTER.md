@@ -36,8 +36,11 @@ Ouvrez un terminal PowerShell en tant qu’administrateur et exécutez :
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 Activez-le :
-- **Windows** : `.\venv\Scripts\activate`
+- **Windows** : .\venv\Scripts\activate
 - **macOS/Linux** : `source venv/bin/activate`
+
+ACTIVER LE SERVEUR python manage.py runserver
+
 
 ### 3. Installer les dépendances
 va dans :  cd backend 
